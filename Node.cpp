@@ -15,4 +15,4 @@
 	Node::Node(int64_t value, Node* left, Node* right):
 		value_(value),
 		left_(left),
-		right_(right_) {}
+		right_(right) {}
