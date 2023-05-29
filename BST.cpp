@@ -12,6 +12,7 @@
 		return new Node(values[split], build(values, leftRange, split-1), build(values, split+1, rightRange));
 	}
 
+
 	/**
 	* Recursively finds the predecessor to a given integer in the tree
 	*/
@@ -34,17 +35,21 @@
 		}
 	}
 
+	// maxFound is either 0, or the max representant of the left neighbour tree
 	int64_t BST::getPredecessor(int64_t maxFound, int64_t limit) {
 		return getPredecessorInternal(root_, maxFound, limit);
 	}
+
 
 	Node* BST::getRoot() {
 		return root_;
 	}
 
+
 	BST::BST(std::vector<int64_t> values) {
 		root_ = build(values, 0, values.size() - 1);
 	}
+
 
 	BST::~BST() {
 		delete(root_);
