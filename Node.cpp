@@ -16,3 +16,12 @@
 		value_(value),
 		left_(left),
 		right_(right) {}
+
+	Node::~Node() {
+		if (left_ != nullptr) {
+			delete(left_);
+		}
+		if (right_ != nullptr) {
+			delete(right_);
+		}
+	}
