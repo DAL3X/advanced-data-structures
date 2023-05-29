@@ -9,11 +9,33 @@
 			return nullptr;
 		}
 		int64_t split = (leftRange + rightRange) / 2; // This is always an int because of implicit integer rounding
-		return new Node(values[split], build(values, leftRange, split-1), build(values, split + 1, rightRange));
+		return new Node(values[split], build(values, leftRange, split-1), build(values, split+1, rightRange));
 	}
 
-	int64_t BST::getPredecessor(int64_t maxSmallerTree, int64_t limit) {
-		
+	/**
+	* Recursively finds the predecessor to a given integer in the tree
+	*/
+	int64_t getPredecessorInternal(Node* node, int64_t maxFound, int64_t limit) {
+		if (node == nullptr) {
+			// End of tree
+			return maxFound;
+		}
+		if (node->getValue() <= limit && node->getValue() >= maxFound) {
+			// Found new maximum
+			maxFound = node->getValue();
+		}
+		if (node->getValue() < limit) {
+			// Search in right subtree
+			return getPredecessorInternal(node->getRightChild(), maxFound, limit);
+		}
+		else {
+			// Search in left subtree
+			return getPredecessorInternal(node->getLeftChild(), maxFound, limit);
+		}
+	}
+
+	int64_t BST::getPredecessor(int64_t maxFound, int64_t limit) {
+		return getPredecessorInternal(root_, maxFound, limit);
 	}
 
 	Node* BST::getRoot() {
