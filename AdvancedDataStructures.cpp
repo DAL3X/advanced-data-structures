@@ -1,11 +1,12 @@
 #include <iostream>
 #include <cstdint>
 #include <vector>
-#include "BST.h"
+#include "YTrie.h"
 
 
 int main() {
-    std::vector<int64_t> vect{10, 20, 30 , 40, 50, 60, 70};
-    BST tree = BST(vect);
-    std::cout << tree.getPredecessor(0, 51) << "\n";
+    std::vector<int64_t> vect{1, 2, 3, 6, 7, 9, 11, 12, 14, 15};
+    YTrie trie = YTrie(vect);
+    std::cout << trie.getTestRep()[0] << "\n";
+    std::cout << trie.getTestTree(15)->getRoot()->getValue() << "\n";
 }

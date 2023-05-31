@@ -13,24 +13,42 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Headerdateien\Exercise1">
+      <UniqueIdentifier>{f636c2b3-2cb7-4ab1-9a0d-6b089dc51fd0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Exercise1">
+      <UniqueIdentifier>{b77f1bd9-76f5-488c-bcee-767c2a50a7f5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AdvancedDataStructures.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="Node.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="BST.cpp">
-      <Filter>Quelldateien</Filter>
+      <Filter>Quelldateien\Exercise1</Filter>
+    </ClCompile>
+    <ClCompile Include="Node.cpp">
+      <Filter>Quelldateien\Exercise1</Filter>
+    </ClCompile>
+    <ClCompile Include="TrieNode.cpp">
+      <Filter>Quelldateien\Exercise1</Filter>
+    </ClCompile>
+    <ClCompile Include="YTrie.cpp">
+      <Filter>Quelldateien\Exercise1</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="YTrie.h">
+      <Filter>Headerdateien\Exercise1</Filter>
+    </ClInclude>
+    <ClInclude Include="TrieNode.h">
+      <Filter>Headerdateien\Exercise1</Filter>
+    </ClInclude>
     <ClInclude Include="Node.h">
-      <Filter>Headerdateien</Filter>
+      <Filter>Headerdateien\Exercise1</Filter>
     </ClInclude>
     <ClInclude Include="BST.h">
-      <Filter>Headerdateien</Filter>
+      <Filter>Headerdateien\Exercise1</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -8,7 +8,7 @@
 		if (leftRange > rightRange) {
 			return nullptr;
 		}
-		int64_t split = (leftRange + rightRange) / 2; // This is always an int because of implicit integer rounding
+		int64_t split = (leftRange + rightRange) / 2; // This is always an integer because of implicit integer rounding
 		return new Node(values[split], build(values, leftRange, split-1), build(values, split+1, rightRange));
 	}
 
@@ -46,9 +46,8 @@
 	}
 
 
-	BST::BST(std::vector<int64_t> values) {
-		root_ = build(values, 0, values.size() - 1);
-	}
+	BST::BST(std::vector<int64_t> values) :
+		root_(build(values, 0, values.size() - 1)) {}
 
 
 	BST::~BST() {

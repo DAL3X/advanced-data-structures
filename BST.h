@@ -6,7 +6,7 @@
 class BST {
 
 private:
-	Node* root_;
+	Node* root_ = nullptr;
 
 public:
 	int64_t getPredecessor(int64_t maxSmallerTree, int64_t limit);

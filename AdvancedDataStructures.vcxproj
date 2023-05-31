@@ -130,10 +130,14 @@
     <ClCompile Include="AdvancedDataStructures.cpp" />
     <ClCompile Include="BST.cpp" />
     <ClCompile Include="Node.cpp" />
+    <ClCompile Include="TrieNode.cpp" />
+    <ClCompile Include="YTrie.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BST.h" />
     <ClInclude Include="Node.h" />
+    <ClInclude Include="TrieNode.h" />
+    <ClInclude Include="YTrie.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
