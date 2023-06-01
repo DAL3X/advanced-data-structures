@@ -83,10 +83,13 @@ void YTrie::constructTrie(std::vector<TrieNode*>* representatives, int64_t maskS
 			constructTrie(representatives, maskShift - 1, maskHistory + split, splitIndex, rightRange);
 		}
 	}
+<<<<<<< HEAD
 	else { // Add the leafs
 		lookup_.erase((*representatives)[leftRange]->getValue());
 		lookup_.insert({ (*representatives)[leftRange]->getValue(), (*representatives)[leftRange]});
 	}
+=======
+>>>>>>> c6b24ec2ff6eabdc458a1f6750c749d35edd8303
 }
 
 
