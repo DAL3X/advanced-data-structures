@@ -60,28 +60,31 @@ void YTrie::split(std::vector <int64_t> values) {
 */
 void YTrie::constructTrie(std::vector<TrieNode*>* representatives, int64_t maskShift, int64_t maskHistory, int64_t leftRange, int64_t rightRange) {
 	int64_t split = 1LL << maskShift; // Mask is 2^maskShift
-	if (maskShift != 0) {
+	if (maskShift != -1) { // Construct inner node
+		int64_t splitIndex = leftRange;
 		TrieNode* leftMax = nullptr;
 		TrieNode* rightMin = nullptr;
-		for (int64_t i = leftRange; i <= rightRange; i++) { // This for loop could also be replaced by using binary search to find the split point.
-			if ((*representatives)[i]->getValue() >= split) {
+		for (; splitIndex <= rightRange; splitIndex++) { // This for loop could also be replaced by using binary search to find the split point.
+			if ((*representatives)[splitIndex]->getValue() >= split) {
 				// Found split point
-				if (i != leftRange) {
-					leftMax = (*representatives)[i - 1];
+				if (splitIndex != leftRange) {
+					leftMax = (*representatives)[splitIndex - 1];
 				}
-				if (i != rightRange) {
-					rightMin = (*representatives)[i];
-				}
+				rightMin = (*representatives)[splitIndex];
 				break;
 			}
 		}
 		TrieNode* node = new TrieNode(leftMax, rightMin);
 		lookup_.insert({ maskHistory + split, node });
-		constructTrie(representatives, maskShift - 1, maskHistory + split, leftRange, i-1);
-		constructTrie(representatives, maskShift - 1, maskHistory + split, i, rightRange);
+		if (splitIndex > leftRange) { // Construct left subtree
+			constructTrie(representatives, maskShift - 1, maskHistory, leftRange, splitIndex - 1);
+		}
+		if (splitIndex <= rightRange) { // Construct right subtree
+			constructTrie(representatives, maskShift - 1, maskHistory + split, splitIndex, rightRange);
+		}
 	}
-	else {
-		// Add the leaves
+	else { // Add the leafs
+		lookup_.insert({ maskHistory, (*representatives)[leftRange]});
 	}
 }
 
@@ -89,7 +92,7 @@ void YTrie::constructTrie(std::vector<TrieNode*>* representatives, int64_t maskS
 YTrie::YTrie(std::vector<int64_t> values) :
 	depth_(calcDepth(values)) {
 	split(values);
-	constructTrie(&representatives_, depth_, 0, 0, values.size() - 1);
+	constructTrie(&representatives_, depth_, 0, 0, representatives_.size());
 }
 
 
@@ -99,4 +102,8 @@ int64_t YTrie::getPredecessor(int64_t limit) {
 
 std::vector<TrieNode*> YTrie::getTestRep() {
 	return representatives_;
+}
+
+std::unordered_map<int64_t, TrieNode*>* YTrie::getTestTrie() {
+	return &lookup_;
 }

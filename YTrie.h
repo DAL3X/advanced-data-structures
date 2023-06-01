@@ -17,4 +17,5 @@ public:
 	YTrie(std::vector<int64_t> values);
 	int64_t getPredecessor(int64_t limit);
 	std::vector<TrieNode*> getTestRep();
+	std::unordered_map<int64_t, TrieNode*>* getTestTrie();
 };
