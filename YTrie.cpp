@@ -60,7 +60,7 @@ void YTrie::split(std::vector <int64_t> values) {
 */
 void YTrie::constructTrie(std::vector<TrieNode*>* representatives, int64_t maskShift, int64_t maskHistory, int64_t leftRange, int64_t rightRange) {
 	int64_t split = 1LL << maskShift; // Mask is 2^maskShift
-	if (maskShift != -1) { // Construct inner node
+	if (maskShift != 0) { // Construct inner node
 		int64_t splitIndex = leftRange;
 		TrieNode* leftMax = nullptr;
 		TrieNode* rightMin = nullptr;
@@ -84,7 +84,8 @@ void YTrie::constructTrie(std::vector<TrieNode*>* representatives, int64_t maskS
 		}
 	}
 	else { // Add the leafs
-		lookup_.insert({ maskHistory, (*representatives)[leftRange]});
+		lookup_.erase((*representatives)[leftRange]->getValue());
+		lookup_.insert({ (*representatives)[leftRange]->getValue(), (*representatives)[leftRange]});
 	}
 }
 
@@ -92,7 +93,7 @@ void YTrie::constructTrie(std::vector<TrieNode*>* representatives, int64_t maskS
 YTrie::YTrie(std::vector<int64_t> values) :
 	depth_(calcDepth(values)) {
 	split(values);
-	constructTrie(&representatives_, depth_, 0, 0, representatives_.size());
+	constructTrie(&representatives_, depth_, 0, 0, representatives_.size() - 1);
 }
 
 
