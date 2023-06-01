@@ -1,7 +1,7 @@
 #include "YTrie.h"
 #include <cmath>
 
-/**
+/*
 * Since the numbers are max 64 bits, we could just assume depth = 64.
 * But we can speed up the process when only smaller numbers are present.
 * Eg. with only 32 bit numbers or smaller, we can half the depth of the Trie.
@@ -55,11 +55,33 @@ void YTrie::split(std::vector <int64_t> values) {
 	}
 }
 
-
-void YTrie::constructTrie(std::vector<int64_t> values, int64_t maskExponent, int64_t maskHistory, int64_t leftRange, int64_t rightRange) {
-
-	for (int64_t i = leftRange; i <= rightRange; i++) {
-		
+/*
+* 0 left, 1 right
+*/
+void YTrie::constructTrie(std::vector<TrieNode*>* representatives, int64_t maskShift, int64_t maskHistory, int64_t leftRange, int64_t rightRange) {
+	int64_t split = 1LL << maskShift; // Mask is 2^maskShift
+	if (maskShift != 0) {
+		TrieNode* leftMax = nullptr;
+		TrieNode* rightMin = nullptr;
+		for (int64_t i = leftRange; i <= rightRange; i++) { // This for loop could also be replaced by using binary search to find the split point.
+			if ((*representatives)[i]->getValue() >= split) {
+				// Found split point
+				if (i != leftRange) {
+					leftMax = (*representatives)[i - 1];
+				}
+				if (i != rightRange) {
+					rightMin = (*representatives)[i];
+				}
+				break;
+			}
+		}
+		TrieNode* node = new TrieNode(leftMax, rightMin);
+		lookup_.insert({ maskHistory + split, node });
+		constructTrie(representatives, maskShift - 1, maskHistory + split, leftRange, i-1);
+		constructTrie(representatives, maskShift - 1, maskHistory + split, i, rightRange);
+	}
+	else {
+		// Add the leaves
 	}
 }
 
@@ -67,7 +89,7 @@ void YTrie::constructTrie(std::vector<int64_t> values, int64_t maskExponent, int
 YTrie::YTrie(std::vector<int64_t> values) :
 	depth_(calcDepth(values)) {
 	split(values);
-	constructTrie(values, depth_, 0, 0, values.size() - 1);
+	constructTrie(&representatives_, depth_, 0, 0, values.size() - 1);
 }
 
 

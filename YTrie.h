@@ -9,9 +9,9 @@ class YTrie {
 private:
 	int64_t depth_;
 	std::vector<TrieNode*> representatives_ = *(new std::vector<TrieNode*>);
-	std::vector<std::unordered_map<int64_t, TrieNode>*> lookup_ = *(new std::vector<std::unordered_map<int64_t, TrieNode>*>);
+	std::unordered_map<int64_t, TrieNode*> lookup_ = *(new std::unordered_map<int64_t, TrieNode*>);
 	void split(std::vector <int64_t> values);
-	void constructTrie(std::vector<int64_t> values, int64_t maskExponent, int64_t maskHistory, int64_t leftRange, int64_t rightRange);
+	void constructTrie(std::vector<TrieNode*>* representatives, int64_t maskShift, int64_t maskHistory, int64_t leftRange, int64_t rightRange);
 
 public:
 	YTrie(std::vector<int64_t> values);
