@@ -11,35 +11,63 @@ int64_t calcDepth(std::vector <int64_t> values) {
 	return (int64_t)std::floor(std::log2(values.back()));
 }
 
+BST* constructBST(int64_t position, int64_t groupSize, std::vector <int64_t> values) {
+	// Isolate the group with the given size for the representative on the given position 
+	std::vector<int64_t> group(values.begin() + position - (groupSize - 1), values.begin() + position + 1);
+	BST* tree = new BST(group);
+	return tree;
+}
+
+/*
+* Adds a leaf to the trie with a max sized binary search tree.
+*/
+void addRegularTrieLeaf(std::vector<int64_t> values, int64_t index, std::vector<TrieNode*>* representatives, int64_t depth) {
+	int64_t maxIndex = values.size() - 1;
+	if (index == depth - 1) {
+		// First to add has nullptr as previous
+		representatives->push_back(new TrieNode(values[index], nullptr, constructBST(index, depth, values)));
+	}
+	else {
+		// All the others have the predecessor as previous. Also sets the next pointers for the last added leaf.
+		representatives->push_back(new TrieNode(values[index], representatives->back(), constructBST(index, depth, values)));
+		(*representatives)[representatives->size() - 2]->setNext((*representatives)[representatives->size() - 1]);
+	}
+}
+
+/*
+* Adds a leaf to the trie without a max sized binary search tree. This can only happen, when the split is imperfect.
+*/
+void addIrregularTrieLeaf(std::vector<int64_t> values, std::vector<TrieNode*>* representatives, int64_t depth) {
+		representatives->push_back(new TrieNode(values.back(), representatives->back(), constructBST(values.size() - 1, values.size() % depth, values)));
+		(*representatives)[representatives->size() - 2]->setNext((*representatives)[representatives->size() - 1]);
+}
+
+
 
 void YTrie::split(std::vector <int64_t> values) {
 	for (int64_t i = depth_ - 1; i < values.size(); i = i + depth_) {
-		// Store the representative and construct the BST for it
-		representatives_.push_back(values[i]);
-		constructBST(i, depth_, values);
+		// Store the representative and construct the BST for it.
+		addRegularTrieLeaf(values, i, &representatives_, depth_);
 	}
 	if (values.size() % depth_ != 0) {
-		// One or more(<depth) values at the back don't have a representant yet. Take the last value as one and construct the BST
-		representatives_.push_back(values.back());
-		constructBST(values.size()-1, values.size() % depth_, values);
+		// One or more(<depth) values at the back don't have a representant yet. Take the last value as one and construct the BST.
+		addIrregularTrieLeaf(values, &representatives_, depth_);
 	}
 }
 
 
-/**
-* Constructs a Binary Search Tree for given Parameters. This is part of the lower Y-Trie implementation.
-*/
-void YTrie::constructBST(int64_t position, int64_t groupSize, std::vector <int64_t> values) {
-	// Isolate the group with the given size for the representative on the given position 
-	std::vector<int64_t> group(values.begin() + position - (groupSize-1), values.begin() + position + 1);
-	BST* tree = new BST(group);
-	searchTrees_.insert({values[position], tree});
+void YTrie::constructTrie(std::vector<int64_t> values, int64_t maskExponent, int64_t maskHistory, int64_t leftRange, int64_t rightRange) {
+
+	for (int64_t i = leftRange; i <= rightRange; i++) {
+		
+	}
 }
 
 
 YTrie::YTrie(std::vector<int64_t> values) :
 	depth_(calcDepth(values)) {
 	split(values);
+	constructTrie(values, depth_, 0, 0, values.size() - 1);
 }
 
 
@@ -47,10 +75,6 @@ int64_t YTrie::getPredecessor(int64_t limit) {
 	return 0;
 }
 
-BST* YTrie::getTestTree(int64_t rep) {
-	return searchTrees_[rep];
-}
-
-std::vector<int64_t> YTrie::getTestRep() {
+std::vector<TrieNode*> YTrie::getTestRep() {
 	return representatives_;
 }

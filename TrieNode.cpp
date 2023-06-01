@@ -6,6 +6,11 @@ bool TrieNode::isLeaf() {
 }
 
 
+int64_t TrieNode::getValue() {
+	return value_;
+}
+
+
 TrieNode* TrieNode::getLeftMax() {
 	if (!leaf_) {
 		return leftMax_;
@@ -35,6 +40,10 @@ TrieNode* TrieNode::next() {
 	return nullptr;
 }
 
+void TrieNode::setNext(TrieNode* next) {
+	rightMin_ = next;
+}
+
 
 BST* TrieNode::getBinarySearchTree() {
 	if (leaf_) {
@@ -49,8 +58,8 @@ TrieNode::TrieNode(TrieNode* leftMax, TrieNode* rightMin) :
 	leftMax_(leftMax),
 	rightMin_(rightMin) {}
 
-TrieNode::TrieNode(TrieNode* leftMax, TrieNode* rightMin, BST* tree) :
+TrieNode::TrieNode(int64_t value, TrieNode* previous, BST* tree) :
 	leaf_(true),
-	leftMax_(leftMax),
-	rightMin_(rightMin),
+	value_(value),
+	leftMax_(previous),
 	tree_(tree) {}
