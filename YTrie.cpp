@@ -83,16 +83,13 @@ void YTrie::constructTrie(std::vector<TrieNode*>* representatives, int64_t maskS
 			constructTrie(representatives, maskShift - 1, maskHistory + split, splitIndex, rightRange);
 		}
 	}
-	else { // Add the leafs
-		lookup_.insert({ maskHistory, (*representatives)[leftRange]});
-	}
 }
 
 
 YTrie::YTrie(std::vector<int64_t> values) :
 	depth_(calcDepth(values)) {
 	split(values);
-	constructTrie(&representatives_, depth_, 0, 0, representatives_.size());
+	constructTrie(&representatives_, depth_, 0, 0, representatives_.size() - 1);
 }
 
 
