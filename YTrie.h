@@ -12,10 +12,9 @@ private:
 	std::vector<TrieNode*> representatives_ = *(new std::vector<TrieNode*>);
 	std::unordered_map<std::string, TrieNode*> lookup_ = *(new std::unordered_map<std::string, TrieNode*>);
 	void split(std::vector <int64_t> values);
-	void constructTrie(std::vector<TrieNode*>* representatives, std::vector<int64_t>* representativeValues, int64_t exponent, std::string maskHistory, int64_t leftRange, int64_t rightRange);
+	void constructTrie(std::vector<TrieNode*>* representatives, std::vector<int64_t>* representativeValues, int64_t exponent, std::string bitHistory, int64_t leftRange, int64_t rightRange);
 
 public:
-	void constructTrie(std::vector<TrieNode*>* representatives, std::vector<int64_t> representativeValues, int64_t exponent, std::string maskHistory, int64_t leftRange, int64_t rightRange);
 	YTrie(std::vector<int64_t> values);
 	int64_t getPredecessor(int64_t limit);
 	std::vector<TrieNode*> getTestRep();
