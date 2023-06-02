@@ -39,8 +39,8 @@ void addRegularTrieLeaf(std::vector<int64_t> values, int64_t index, std::vector<
 * Adds a leaf to the trie representatives without a max sized binary search tree. This can only happen, when the split is imperfect.
 */
 void addIrregularTrieLeaf(std::vector<int64_t> values, std::vector<TrieNode*>* representatives, int64_t depth) {
-		representatives->push_back(new TrieNode(values.back(), representatives->back(), constructBST(values.size() - 1, values.size() % depth, values)));
-		(*representatives)[representatives->size() - 2]->setNext((*representatives)[representatives->size() - 1]);
+	representatives->push_back(new TrieNode(values.back(), representatives->back(), constructBST(values.size() - 1, values.size() % depth, values)));
+	(*representatives)[representatives->size() - 2]->setNext((*representatives)[representatives->size() - 1]);
 }
 
 
@@ -59,16 +59,24 @@ void YTrie::split(std::vector <int64_t> values) {
 /*
 * 0 left, 1 right
 */
-void YTrie::constructTrie(std::vector<TrieNode*>* representatives, std::vector<int64_t>* representativeValues, 
-	int64_t exponent, std::string maskHistory, int64_t leftRange, int64_t rightRange) {
-
+void YTrie::constructTrie(std::vector<TrieNode*>* representatives, std::vector<int64_t>* representativeValues,
+	int64_t exponent, std::string bitHistory, int64_t leftRange, int64_t rightRange) {
 	int64_t split = 1LL << exponent; // Mask is 2^maskShift
 	if (exponent != -1) { // Construct inner node
 		int64_t splitIndex = rightRange + 1;
 		TrieNode* leftMax = nullptr;
 		TrieNode* rightMin = nullptr;
 		bool foundSplit = false;
-		for (int i = 0; i <= rightRange; i++) { // This for loop could also be replaced by using binary search to find the split point.
+		if (exponent == 0 && leftRange == rightRange) {
+			// Only one representatives left on the last layer. Finding a split point might fail, so we insert explicitly
+			if ((*representativeValues)[leftRange] == 1) {
+				rightMin = (*representatives)[leftRange];
+			}
+			else {
+				leftMax = (*representatives)[leftRange];
+			}
+		}
+		for (int i = leftRange; i <= rightRange; i++) { // This for loop could also be replaced by using binary search to find the split point.
 			if ((*representativeValues)[i] >= split) { // Found split point
 				if (!foundSplit) { // Found split point for the first time
 					splitIndex = i;
@@ -82,18 +90,18 @@ void YTrie::constructTrie(std::vector<TrieNode*>* representatives, std::vector<i
 			}
 		}
 		TrieNode* node = new TrieNode(leftMax, rightMin);
-		lookup_.insert({ maskHistory, node });
+		lookup_.insert({ bitHistory, node });
 		if (splitIndex > leftRange) { // Construct left subtree
-			std::string leftMaskHistory = maskHistory;
+			std::string leftMaskHistory = bitHistory;
 			constructTrie(representatives, representativeValues, exponent - 1, leftMaskHistory.append("0"), leftRange, splitIndex - 1);
 		}
 		if (splitIndex <= rightRange) { // Construct right subtree
-			std::string rightMaskHistory = maskHistory;
+			std::string rightMaskHistory = bitHistory;
 			constructTrie(representatives, representativeValues, exponent - 1, rightMaskHistory.append("1"), splitIndex, rightRange);
 		}
 	}
 	else { // Add the leafs
-		lookup_.insert({ std::to_string((*representatives)[leftRange]->getValue()), (*representatives)[leftRange]});
+		lookup_.insert({ bitHistory, (*representatives)[leftRange]});
 	}
 }
 
