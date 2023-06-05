@@ -1,6 +1,6 @@
 #include "YTrie.h"
 #include <cmath>
-#include <iostream>
+#include <bitset>
 
 /*
 * Since the numbers are max 64 bits, we could just assume depth = 64.
@@ -17,13 +17,6 @@ BST* constructBST(int64_t position, int64_t groupSize, std::vector <int64_t> val
 	std::vector<int64_t> group(values.begin() + position - (groupSize - 1), values.begin() + position + 1);
 	BST* tree = new BST(group);
 	return tree;
-}
-
-
-int64_t getPredecessorInternal(std::unordered_map<std::string, TrieNode*>* lookup, int64_t searchInt, int64_t depth) {
-	int64_t leftRange = 0;
-	int64_t rightRange = depth;
-	return 0;
 }
 
 /*
@@ -125,7 +118,13 @@ YTrie::YTrie(std::vector<int64_t> values) :
 
 
 int64_t YTrie::getPredecessor(int64_t limit) {
-
+	int64_t leftRange = 0;
+	int64_t rightRange = depth_ + 1;
+	std::string fullBitString = std::bitset<64>(limit).to_string().substr(64-(depth_+1)); // Input bit-string with same length as representants
+	while (leftRange <= rightRange) {
+		int64_t middle = round((leftRange + rightRange) / 2);
+		// TODO Implement rest of the binary search over the lookup_ map. Make sure to never acces lookup_[""].
+	}
 	return 0;
 }
 

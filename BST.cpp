@@ -1,5 +1,6 @@
 #include "BST.h"
 #include "Node.h"
+#include <cmath>
 
 	/**
 	* Recursively builds the Binary Search Tree from left to right
@@ -8,7 +9,7 @@
 		if (leftRange > rightRange) {
 			return nullptr;
 		}
-		int64_t split = (leftRange + rightRange) / 2; // This is always an integer because of implicit integer rounding
+		int64_t split = round((leftRange + rightRange) / 2);
 		return new Node(values[split], build(values, leftRange, split-1), build(values, split+1, rightRange));
 	}
 
