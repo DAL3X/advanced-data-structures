@@ -73,54 +73,42 @@ void YTrie::constructTrie(std::vector<TrieNode*>* representatives, std::vector<i
 		int64_t splitIndex = rightRange + 1;
 		TrieNode* leftMax = nullptr;
 		TrieNode* rightMin = nullptr;
-		bool foundSplit = false;
-		if (exponent == 0 && leftRange == rightRange) { // Only one representatives left on the last layer. Finding a split point might fail, so we insert explicitly
-			if ((*representativeValues)[leftRange] == 1) {
-				rightMin = (*representatives)[leftRange];
-				TrieNode* node = new TrieNode(leftMax, rightMin);
-				lookup_.insert({ bitHistory, node });
-				std::string rightMaskHistory = bitHistory;
-				constructTrie(representatives, representativeValues, exponent - 1, rightMaskHistory.append("1"), leftRange, rightRange);
-			}
-			else {
-				leftMax = (*representatives)[leftRange];
-				TrieNode* node = new TrieNode(leftMax, rightMin);
-				lookup_.insert({ bitHistory, node });
-				std::string leftMaskHistory = bitHistory;
-				constructTrie(representatives, representativeValues, exponent - 1, leftMaskHistory.append("0"), leftRange, rightRange);
+		bool foundSplit = false; 
+		// Attempt to find a split point
+		for (int64_t i = leftRange; i <= rightRange; i++) {
+			if ((*representativeValues)[i] >= split) { // Found split point
+				if (!foundSplit) { // Found split point for the first time
+					splitIndex = i;
+					foundSplit = true;
+					if (i != leftRange) {
+						leftMax = (*representatives)[i - 1];
+					}
+					rightMin = (*representatives)[i];
+				}
+				(*representativeValues)[i] = (*representativeValues)[i] - split;
 			}
 		}
-		else { // Attempt to find a split point
-			for (int64_t i = leftRange; i <= rightRange; i++) {
-				if ((*representativeValues)[i] >= split) { // Found split point
-					if (!foundSplit) { // Found split point for the first time
-						splitIndex = i;
-						foundSplit = true;
-						if (i != leftRange) {
-							leftMax = (*representatives)[i - 1];
-						}
-						rightMin = (*representatives)[i];
-					}
-					(*representativeValues)[i] = (*representativeValues)[i] - split;
-				}
-			}
-			if (leftMax == nullptr && rightMin == nullptr) { // No split was found, all representant belong to the left side of this inner node
-				leftMax = (*representatives)[rightRange];
-			}
-			TrieNode* node = new TrieNode(leftMax, rightMin);
-			lookup_.insert({ bitHistory, node });
-			if (splitIndex > leftRange) { // Construct left subtree
-				std::string leftMaskHistory = bitHistory;
-				constructTrie(representatives, representativeValues, exponent - 1, leftMaskHistory.append("0"), leftRange, splitIndex - 1);
-			}
-			if (splitIndex <= rightRange) { // Construct right subtree
-				std::string rightMaskHistory = bitHistory;
-				constructTrie(representatives, representativeValues, exponent - 1, rightMaskHistory.append("1"), splitIndex, rightRange);
-			}
+		if (leftMax == nullptr && rightMin == nullptr) { // No split was found, all representant belong to the left side of this inner node
+			leftMax = (*representatives)[rightRange];
+		}
+		TrieNode* node = new TrieNode(leftMax, rightMin);
+		lookup_.insert({ bitHistory, node });
+		if (splitIndex > leftRange) { // Construct left subtree
+			std::string leftMaskHistory = bitHistory;
+			constructTrie(representatives, representativeValues, exponent - 1, leftMaskHistory.append("0"), leftRange, splitIndex - 1);
+		}
+		if (splitIndex <= rightRange) { // Construct right subtree
+			std::string rightMaskHistory = bitHistory;
+			constructTrie(representatives, representativeValues, exponent - 1, rightMaskHistory.append("1"), splitIndex, rightRange);
 		}
 	}
 	else { // Add the leafs
-		lookup_.insert({ bitHistory, (*representatives)[leftRange]});
+		if ((bitHistory.compare(bitHistory.size(), 1, "0")) == 0) {
+			lookup_.insert({ bitHistory, (*representatives)[leftRange] });
+		}
+		else {
+			lookup_.insert({ bitHistory, (*representatives)[rightRange] });
+		}
 	}
 }
 
