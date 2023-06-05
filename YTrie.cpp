@@ -103,7 +103,7 @@ void YTrie::constructTrie(std::vector<TrieNode*>* representatives, std::vector<i
 		}
 	}
 	else { // Add the leafs
-		if ((bitHistory.compare(bitHistory.size(), 1, "0")) == 0) {
+		if ((bitHistory.compare(bitHistory.size(), 1, "0")) == 0) { // Choose the correct leftRange and rightRange (according to last bit) to not go out of boundary
 			lookup_.insert({ bitHistory, (*representatives)[leftRange] });
 		}
 		else {
