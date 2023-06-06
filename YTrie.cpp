@@ -170,11 +170,3 @@ int64_t YTrie::getPredecessor(int64_t limit) {
 		}
 	}
 }
-
-std::vector<TrieNode*> YTrie::getTestRep() {
-	return representatives_;
-}
-
-std::unordered_map<std::string, TrieNode*>* YTrie::getTestTrie() {
-	return &lookup_;
-}
