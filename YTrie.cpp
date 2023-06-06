@@ -78,7 +78,7 @@ void YTrie::constructTrie(std::vector<TrieNode*>* representatives, std::vector<i
 					}
 					rightMin = (*representatives)[i];
 				}
-				(*representativeValues)[i] = (*representativeValues)[i] - split;
+				(*representativeValues)[i] = (*representativeValues)[i] - split; // Because of the way the numbers are iterated, these can never create a negative value
 			}
 		}
 		if (leftMax == nullptr && rightMin == nullptr) { // No split was found, all representant belong to the left side of this inner node
@@ -118,14 +118,57 @@ YTrie::YTrie(std::vector<int64_t> values) :
 
 
 int64_t YTrie::getPredecessor(int64_t limit) {
-	int64_t leftRange = 0;
-	int64_t rightRange = depth_ + 1;
+	int64_t lowRange = 0;
+	int64_t highRange = depth_ + 1;
 	std::string fullBitString = std::bitset<64>(limit).to_string().substr(64-(depth_+1)); // Input bit-string with same length as representants
-	while (leftRange <= rightRange) {
-		int64_t middle = round((leftRange + rightRange) / 2);
-		// TODO Implement rest of the binary search over the lookup_ map. Make sure to never acces lookup_[""].
+	TrieNode* bestMatchingNode = lookup_[""];
+	while (lowRange <= highRange) {
+		int64_t middle = round((lowRange + highRange) / 2);
+		std::string partBitString = fullBitString.substr(0, middle);
+		if (lookup_.count(partBitString) != 0) { // Matched part bit string. Remember node and search lower in trie 
+			bestMatchingNode = lookup_[partBitString];
+			if (lowRange == middle) {
+				lowRange++; // When stuck, move the lower range one higher
+			}
+			else {
+				lowRange = middle;
+			}
+		}
+		else { // Search higher in trie
+			if (highRange == middle) {
+				highRange--; // When stuck, move the higher range one lower
+			}
+			else {
+				highRange = middle;
+			}
+		}
 	}
-	return 0;
+	if (bestMatchingNode->isLeaf()) {
+		return bestMatchingNode->getValue();
+	}
+	else {
+		// Our binary search should have gotten to the best possible node for us. This means the bestMatchingNode only has one right, or one left child.
+		if (bestMatchingNode->getLeftMax() != nullptr) {
+			if (bestMatchingNode->getLeftMax()->next() != nullptr) {
+				return bestMatchingNode->getLeftMax()->next()->getBinarySearchTree()->getPredecessor(bestMatchingNode->getLeftMax()->getValue(), limit);
+			}
+			else {
+				return bestMatchingNode->getLeftMax()->getValue();
+			}
+		}
+		else if (bestMatchingNode->getRightMin() != nullptr) {
+			if (bestMatchingNode->getRightMin()->previous() != nullptr) {
+				return bestMatchingNode->getRightMin()->getBinarySearchTree()->getPredecessor(bestMatchingNode->getRightMin()->previous()->getValue(), limit);
+			}
+			else {
+				return bestMatchingNode->getRightMin()->getBinarySearchTree()->getPredecessor(0, limit); // 0 is ok if we checked for input bound before
+			}
+		}
+		else {
+			// Something went wrong
+			return LLONG_MAX;
+		}
+	}
 }
 
 std::vector<TrieNode*> YTrie::getTestRep() {
