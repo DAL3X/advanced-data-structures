@@ -3,6 +3,7 @@
 #include <bitset>
 
 /*
+* Calculates the depth needed for the trie.
 * Since the numbers are max 64 bits, we could just assume depth = 64.
 * But we can speed up the process when only smaller numbers are present.
 * Eg. with only 32 bit numbers or smaller (even in 64 bit format), we can half the depth of the Trie.
@@ -12,6 +13,9 @@ int64_t calcDepth(std::vector <int64_t> values) {
 	return (int64_t)std::floor(std::log2(values.back()));
 }
 
+/**
+* 
+*/
 BST* constructBST(int64_t position, int64_t groupSize, std::vector <int64_t> values) {
 	// Isolate the group with the given size for the representative on the given position 
 	std::vector<int64_t> group(values.begin() + position - (groupSize - 1), values.begin() + position + 1);
@@ -20,7 +24,12 @@ BST* constructBST(int64_t position, int64_t groupSize, std::vector <int64_t> val
 }
 
 /*
-* Adds a leaf to the trie representatives with a max sized binary search tree.
+* Adds a leaf to the trie representatives with a maximum sized binary search tree.
+* 
+* @param values A full vector of all values for which the trie is built.
+* @param index The index of the representative in the given values.
+* @param representatives A vector of all representatives so far in TrieNode format.
+* @param depth The trie depth.
 */
 void addRegularTrieLeaf(std::vector<int64_t> values, int64_t index, std::vector<TrieNode*>* representatives, int64_t depth) {
 	int64_t maxIndex = values.size() - 1;
@@ -36,13 +45,17 @@ void addRegularTrieLeaf(std::vector<int64_t> values, int64_t index, std::vector<
 }
 
 /*
-* Adds a leaf to the trie representatives without a max sized binary search tree. This can only happen, when the split is imperfect.
+* Adds a leaf to the trie representatives WITHOUT a maximum sized binary search tree. This can only happen, when the split is imperfect.
+* Does not need an index, since it knows it has to be the last representant.
+* 
+* @param values A full vector of all values for which the trie is built.
+* @param representatives A vector of all representatives so far in TrieNode format.
+* @param depth The trie depth.
 */
 void addIrregularTrieLeaf(std::vector<int64_t> values, std::vector<TrieNode*>* representatives, int64_t depth) {
 	representatives->push_back(new TrieNode(values.back(), representatives->back(), constructBST(values.size() - 1, values.size() % depth, values)));
 	(*representatives)[representatives->size() - 2]->setNext((*representatives)[representatives->size() - 1]);
 }
-
 
 
 void YTrie::split(std::vector <int64_t> values) {
@@ -56,12 +69,10 @@ void YTrie::split(std::vector <int64_t> values) {
 	}
 }
 
-/*
-* 0 left, 1 right
-*/
+// For the whole trie: 0 = left, 1 = right
 void YTrie::constructTrie(std::vector<TrieNode*>* representatives, std::vector<int64_t>* representativeValues,
 	int64_t exponent, std::string bitHistory, int64_t leftRange, int64_t rightRange) {
-	int64_t split = 1LL << exponent; // Mask is 2^maskShift
+	int64_t split = 1LL << exponent; // 2^exponent is the border to split
 	if (exponent != -1) { // Construct inner node
 		int64_t splitIndex = rightRange + 1;
 		TrieNode* leftMax = nullptr;

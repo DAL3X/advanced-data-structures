@@ -2,6 +2,10 @@
 #include <cstdint>
 #include <vector>
 
+/**
+Class for naively storing RMQ answers and processing the queries in O(1) with O(n^2) space usage.
+n is the size of the vector, on which the queries are performed.
+*/
 class NaiveRMQ {
 
 private:

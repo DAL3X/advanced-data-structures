@@ -22,11 +22,8 @@
 		right_(right) {}
 
 
-	/**
-	* Cleans up the lower nodes to avoid memory leaks.
-	* delete on a non reserved block of memory has undefined behaviour, hence we check for a nullptr first.
-	*/
 	Node::~Node() {
+		// delete on a non reserved block of memory has undefined behaviour, hence we check for a nullptr first.
 		if (left_ != nullptr) {
 			delete(left_);
 		}

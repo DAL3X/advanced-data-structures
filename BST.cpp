@@ -3,7 +3,12 @@
 #include <cmath>
 
 	/**
-	* Recursively builds the Binary Search Tree from left to right
+	* Recursively builds the Binary Search Tree from left to right.
+	* Since the given values are sorted, we can split the array and the subarrays in the middle.
+	* 
+	* @param values all the values, on which the binary search tree should be constructed.
+	* @param leftRange Left border for recursive construction. Starts at 0.
+	* @param rightRange Right border for recursive construction. Starts at values.size().
 	*/
 	Node* build(std::vector<int64_t> values, int64_t leftRange, int64_t rightRange) {
 		if (leftRange > rightRange) {
@@ -15,7 +20,12 @@
 
 
 	/**
-	* Recursively finds the predecessor to a given integer in the tree
+	* Recursively finds the predecessor to a given integer in the tree.
+	* This is done by comparing to the value in the node and then looking at the left, or right child.
+	* 
+	* @params node The node we are looking at right now. Starts at the root.
+	* @params maxFound The best predecessor candidate found so far. Starts with root's value.
+	* @param limit The number we want to find the predecessor for.
 	*/
 	int64_t getPredecessorInternal(Node* node, int64_t maxFound, int64_t limit) {
 		if (node == nullptr) {
@@ -36,7 +46,6 @@
 		}
 	}
 
-	// maxFound is either 0, or the max representant of the left neighbour tree
 	int64_t BST::getPredecessor(int64_t maxFound, int64_t limit) {
 		return getPredecessorInternal(root_, maxFound, limit);
 	}
