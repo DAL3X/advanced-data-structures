@@ -2,12 +2,13 @@
 #include <cstdint>
 #include <vector>
 #include <string>
-#include "YTrie.h"
+#include "NaiveRMQ.h"
 
 
 int main() {
-
-    std::vector<int64_t> vect{1, 3, 6, 7, 9, 12, 14, 19};
-    YTrie trie = YTrie(vect);
-    std::cout << trie.getPredecessor(18) << "\n";
+    std::vector<int64_t> vect{8, 2, 5, 1, 9, 11, 10, 20, 22, 4};
+    NaiveRMQ rmq = NaiveRMQ(vect);
+    std::cout << rmq.rangeMinimumQuery(0, 9) << std::endl;
+    std::cout << rmq.rangeMinimumQuery(0, 2) << std::endl;
+    std::cout << rmq.rangeMinimumQuery(4, 8) << std::endl;
 }

@@ -19,6 +19,12 @@
     <Filter Include="Quelldateien\Exercise1">
       <UniqueIdentifier>{b77f1bd9-76f5-488c-bcee-767c2a50a7f5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Headerdateien\Exercise 2 %28naive%29">
+      <UniqueIdentifier>{3b2bc96f-2e9b-46d9-97cd-c15804c0c20b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Exercise 2 %28naive%29">
+      <UniqueIdentifier>{d5028fbe-e3eb-47ae-97c4-ffa112c2904c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AdvancedDataStructures.cpp">
@@ -36,6 +42,9 @@
     <ClCompile Include="YTrie.cpp">
       <Filter>Quelldateien\Exercise1</Filter>
     </ClCompile>
+    <ClCompile Include="NaiveRMQ.cpp">
+      <Filter>Quelldateien\Exercise 2 %28naive%29</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="YTrie.h">
@@ -49,6 +58,9 @@
     </ClInclude>
     <ClInclude Include="BST.h">
       <Filter>Headerdateien\Exercise1</Filter>
+    </ClInclude>
+    <ClInclude Include="NaiveRMQ.h">
+      <Filter>Headerdateien\Exercise 2 %28naive%29</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

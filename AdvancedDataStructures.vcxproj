@@ -129,12 +129,14 @@
   <ItemGroup>
     <ClCompile Include="AdvancedDataStructures.cpp" />
     <ClCompile Include="BST.cpp" />
+    <ClCompile Include="NaiveRMQ.cpp" />
     <ClCompile Include="Node.cpp" />
     <ClCompile Include="TrieNode.cpp" />
     <ClCompile Include="YTrie.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BST.h" />
+    <ClInclude Include="NaiveRMQ.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="TrieNode.h" />
     <ClInclude Include="YTrie.h" />

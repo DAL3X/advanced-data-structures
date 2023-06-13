@@ -5,7 +5,7 @@
 /*
 * Since the numbers are max 64 bits, we could just assume depth = 64.
 * But we can speed up the process when only smaller numbers are present.
-* Eg. with only 32 bit numbers or smaller, we can half the depth of the Trie.
+* Eg. with only 32 bit numbers or smaller (even in 64 bit format), we can half the depth of the Trie.
 * The depth is given as the number of bits used to represent the largest number in the input values.
 */
 int64_t calcDepth(std::vector <int64_t> values) {
