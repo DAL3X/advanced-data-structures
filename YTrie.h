@@ -55,7 +55,7 @@ public:
 	YTrie(std::vector<int64_t> values);
 
 	/**
-	* Performs the predeccesor query.
+	* Performs the predecessor query.
 	* This is done by transforming the input into a bitset and the bitset into a string.
 	* We can then perform a binary search on the lookup_ HashMap to find the best fitting node.
 	* Follow the leftMax, or rightMin and previous pointer to get the best fitting leave.
