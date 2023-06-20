@@ -11,7 +11,7 @@ int64_t calculateLayers(int64_t length) {
 	return ((int64_t)std::floor(std::log2(length))) + 1;
 }
 
-
+// Rework to vector of maps in order to avoid weird access???
 int64_t LogRMQ::rangeMinimumQuery(int64_t min, int64_t max) {
 	int64_t l = (int64_t)std::floor(std::log2(max - min - 1)); // as defined in lecture
 }
