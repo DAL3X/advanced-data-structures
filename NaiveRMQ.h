@@ -9,6 +9,7 @@ n is the size of the vector, on which the queries are performed.
 class NaiveRMQ {
 
 private:
+
 	// Vector used as a 2D vector for saving all answers.
 	std::vector<int64_t>* savedAnswers;
 	
