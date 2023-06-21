@@ -11,19 +11,19 @@ int64_t calculateLayers(int64_t length) {
 	return ((int64_t)std::floor(std::log2(length))) + 1;
 }
 
-// Rework to vector of maps in order to avoid weird access???
 int64_t LogRMQ::rangeMinimumQuery(int64_t min, int64_t max) {
 	int64_t l = (int64_t)std::floor(std::log2(max - min - 1)); // as defined in lecture
+
 }
 
 
 LogRMQ::LogRMQ(std::vector<int64_t> numbers) {
-	savedAnswers = new std::vector<std::vector<std::pair<int64_t, int64_t>>*>();
+	savedAnswers = new std::vector<std::unordered_map<int64_t, std::pair<int64_t, int64_t>>*>();
 	int64_t layer = calculateLayers(numbers.size());
 	// Initialize and fill in the first (trivial) values.
 	for (int64_t i = 0; i < numbers.size(); i++) {
-		savedAnswers->push_back(new std::vector<std::pair<int64_t, int64_t>>);
-		savedAnswers->at(i)->push_back({numbers[i], i});
+		savedAnswers->push_back(new std::unordered_map<int64_t, std::pair<int64_t, int64_t>>());
+		savedAnswers->at(i)->insert({ i, {numbers[i], i} });
 	}
 	// Now fill in the rest. l and x are defined as in the lecture. We start with l = 1 because we already filled the trivial values.
 	for (int64_t l = 1; l <= layer; l++) {
@@ -33,10 +33,11 @@ LogRMQ::LogRMQ(std::vector<int64_t> numbers) {
 				std::pair<int64_t, int64_t> p1 = savedAnswers->at(x)->at(l - 1);
 				std::pair<int64_t, int64_t> p2 = savedAnswers->at(x + pow(2, l-1))->at(l - 1); // Construction formula from the lecture
 				if (p1.first <= p2.first) { // p1 is smaller or same size
-					savedAnswers->at(x)->push_back(p1);
+
+					savedAnswers->at(x)->insert({ l ,p1 });
 				}
 				else { // p2 is smaller 
-					savedAnswers->at(x)->push_back(p2);
+					savedAnswers->at(x)->insert({ l ,p2 });
 				}
 			}
 		}
