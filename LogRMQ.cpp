@@ -17,7 +17,7 @@ std::pair<int64_t, int64_t> LogRMQ::accessLayerData(int64_t min, int64_t max) {
 
 int64_t LogRMQ::rangeMinimumQuery(int64_t min, int64_t max) {
 	// All three query formulas as defined in the lecture.
-	int64_t l = (int64_t)std::floor(std::log2(max - min - 1));
+	int64_t l = (int64_t)std::floor(std::log2(max - min + 1));
 	int64_t splitMax = min + pow(2, l) - 1;
 	int64_t splitMin = max - pow(2, l) + 1;
 	std::pair<int64_t, int64_t> p1 = accessLayerData(min, splitMax);
