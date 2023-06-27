@@ -3,6 +3,10 @@
 #include <vector>
 #include <unordered_map>
 
+/**
+Class for storing RMQ answers and processing the queries in O(1) with O(n log(n)) space usage.
+n is the size of the vector, on which the queries are performed.
+*/
 class LogRMQ {
 
 private:
