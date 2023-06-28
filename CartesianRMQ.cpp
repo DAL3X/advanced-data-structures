@@ -23,7 +23,7 @@ void CartesianRMQ::splitInBlocks(std::vector<uint64_t> numbers) {
 int64_t CartesianRMQ::rangeMinimumQuery(uint64_t min, uint64_t max) {
 	uint64_t minBorder = (uint64_t)floor(min / blockSize_);
 	uint64_t maxBorder = (uint64_t)floor(max / blockSize_);
-	uint64_t queryOne, queryTwo, queryThree = ULLONG_MAX;
+	uint64_t queryOne = ULLONG_MAX, queryTwo = ULLONG_MAX, queryThree = ULLONG_MAX;
 	if (min % blockSize_ != 0) { // We have a left subquery that we have to answer with cartesian trees.
 		queryOne = treeGenerator_->rangeMinimumQuery(*(blocks_->at(minBorder)), min - blockSize_ * minBorder, blockSize_ - 1);
 		minBorder++;
