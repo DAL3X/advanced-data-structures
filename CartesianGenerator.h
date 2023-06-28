@@ -1,0 +1,43 @@
+#pragma once
+#include <unordered_map>
+#include <string>
+#include "NaiveRMQ.h"
+
+class CartesianGenerator {
+
+private:
+
+	// The map storing all the possible cartesian trees and a corresponding rmq data structure.
+	std::unordered_map <std::string, NaiveRMQ*>* treeMap_;
+
+	// Generates the cartesian tree in string format for a given vector of numbers. Since 
+	std::string generateCartesianTree(std::vector<uint64_t> numbers);
+
+	// Generates all possible cartesian trees for vectors of the given size. This method does not generate the corresponding rqm data structures.
+	void generateAllCartesianTrees(uint64_t vectorSize);
+
+public:
+
+	/**
+	* Performs a range minimum query by searching for a fitting cartesian tree and delegating the query to the saved rmq data structure.
+	* Since all answers are already saved, this should take O(1) time.
+	*
+	* @param block The block on which this query is performed.
+	* @param min The minimum range for the query.
+	* @param max The maximum range for the query.
+	*/
+	uint64_t rangeMinimumQuery(std::vector<uint64_t> block, uint64_t min, uint64_t max);
+
+	/**
+	* Construct a CartesianGenerator for the given blocks.
+	* The blocks all have to be the same size!
+	* 
+	* @param blocks The vector of vectors representing all blocks.
+	*/
+	CartesianGenerator(std::vector<std::vector<uint64_t>*>* blocks);
+
+	/**
+	* Deconstructs the CartesianGenerator to free up all reserved memory.
+	*/
+	~CartesianGenerator();
+};

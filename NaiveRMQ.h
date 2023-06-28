@@ -11,10 +11,10 @@ class NaiveRMQ {
 private:
 
 	// Vector used as a 2D vector for saving all answers.
-	std::vector<int64_t>* savedAnswers;
+	std::vector<uint64_t>* savedAnswers;
 	
 	// Size of the array that was given to the constructor. Needed for 2D access in the 1D vector.
-	int64_t size;
+	uint64_t size;
 
 public: 
 
@@ -25,7 +25,7 @@ public:
 	* @param min The minimum range for the query.
 	* @param max The maximum range for the query.
 	*/
-	int64_t rangeMinimumQuery(int64_t min, int64_t max);
+	int64_t rangeMinimumQuery(uint64_t min, uint64_t max);
 
 	/**
 	* Constructor for the NaiveRMQ class.
@@ -35,7 +35,7 @@ public:
 	*
 	* @param numbers The vector of numbers on which the rmq queries should be possible.
 	*/
-	NaiveRMQ(std::vector<int64_t> numbers);
+	NaiveRMQ(std::vector<uint64_t> numbers);
 
 
 	/**

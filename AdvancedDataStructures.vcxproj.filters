@@ -31,6 +31,12 @@
     <Filter Include="Headerdateien\Exercise 2 %28log%29">
       <UniqueIdentifier>{fc23db3f-cafa-46b7-8e58-6dac8006c860}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Headerdateien\Exercise 2">
+      <UniqueIdentifier>{5db51a08-8190-4856-9c9e-42c181d02f09}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Exercise 2">
+      <UniqueIdentifier>{de998d1e-9b2c-4944-8ac5-c203d26620cc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AdvancedDataStructures.cpp">
@@ -54,6 +60,12 @@
     <ClCompile Include="LogRMQ.cpp">
       <Filter>Quelldateien\Exercise 2 %28log%29</Filter>
     </ClCompile>
+    <ClCompile Include="CartesianGenerator.cpp">
+      <Filter>Quelldateien\Exercise 2</Filter>
+    </ClCompile>
+    <ClCompile Include="CartesianRMQ.cpp">
+      <Filter>Quelldateien\Exercise 2</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="YTrie.h">
@@ -73,6 +85,12 @@
     </ClInclude>
     <ClInclude Include="LogRMQ.h">
       <Filter>Headerdateien\Exercise 2 %28log%29</Filter>
+    </ClInclude>
+    <ClInclude Include="CartesianRMQ.h">
+      <Filter>Headerdateien\Exercise 2</Filter>
+    </ClInclude>
+    <ClInclude Include="CartesianGenerator.h">
+      <Filter>Headerdateien\Exercise 2</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
