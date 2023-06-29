@@ -8,6 +8,7 @@ uint64_t CartesianGenerator::rangeMinimumQuery(std::vector<uint64_t> block, uint
 }
 
 
+
 std::string CartesianGenerator::generateCartesianTree(std::vector<uint64_t> numbers) {
 	// Use filling and method as proposed on Wikipedia.
 	// TODO implement
@@ -23,7 +24,7 @@ void CartesianGenerator::generateAllCartesianTrees(uint64_t vectorSize) {
 
 CartesianGenerator::CartesianGenerator(std::vector<std::vector<uint64_t>*>* blocks) {
 	treeMap_ = new std::unordered_map <std::string, NaiveRMQ*>();
-	generateAllCartesianTrees(blocks->at(0)->size()); // The first block is completely filled and therefore tells us the cartesian tree size
+	generateAllCartesianTrees(blocks->at(0)->size()); // The first block is always completely filled and therefore tells us the cartesian tree size
 	// TODO Generate NaiveRMQ for every block and insert them into treeMap_.
 }
 

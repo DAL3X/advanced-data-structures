@@ -130,7 +130,9 @@
     <ClCompile Include="AdvancedDataStructures.cpp" />
     <ClCompile Include="BST.cpp" />
     <ClCompile Include="CartesianGenerator.cpp" />
+    <ClCompile Include="CartesianNode.cpp" />
     <ClCompile Include="CartesianRMQ.cpp" />
+    <ClCompile Include="CartesianTree.cpp" />
     <ClCompile Include="LogRMQ.cpp" />
     <ClCompile Include="NaiveRMQ.cpp" />
     <ClCompile Include="Node.cpp" />
@@ -140,7 +142,9 @@
   <ItemGroup>
     <ClInclude Include="BST.h" />
     <ClInclude Include="CartesianGenerator.h" />
+    <ClInclude Include="CartesianNode.h" />
     <ClInclude Include="CartesianRMQ.h" />
+    <ClInclude Include="CartesianTree.h" />
     <ClInclude Include="LogRMQ.h" />
     <ClInclude Include="NaiveRMQ.h" />
     <ClInclude Include="Node.h" />

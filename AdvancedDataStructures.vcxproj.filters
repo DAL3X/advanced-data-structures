@@ -66,6 +66,12 @@
     <ClCompile Include="CartesianRMQ.cpp">
       <Filter>Quelldateien\Exercise 2</Filter>
     </ClCompile>
+    <ClCompile Include="CartesianNode.cpp">
+      <Filter>Quelldateien\Exercise 2</Filter>
+    </ClCompile>
+    <ClCompile Include="CartesianTree.cpp">
+      <Filter>Quelldateien\Exercise 2</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="YTrie.h">
@@ -90,6 +96,12 @@
       <Filter>Headerdateien\Exercise 2</Filter>
     </ClInclude>
     <ClInclude Include="CartesianGenerator.h">
+      <Filter>Headerdateien\Exercise 2</Filter>
+    </ClInclude>
+    <ClInclude Include="CartesianNode.h">
+      <Filter>Headerdateien\Exercise 2</Filter>
+    </ClInclude>
+    <ClInclude Include="CartesianTree.h">
       <Filter>Headerdateien\Exercise 2</Filter>
     </ClInclude>
   </ItemGroup>
