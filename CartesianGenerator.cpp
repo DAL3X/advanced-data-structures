@@ -1,4 +1,5 @@
 #include "CartesianGenerator.h"
+#include "CartesianTree.h"
 
 
 uint64_t CartesianGenerator::rangeMinimumQuery(std::vector<uint64_t> block, uint64_t min, uint64_t max) {
@@ -7,12 +8,29 @@ uint64_t CartesianGenerator::rangeMinimumQuery(std::vector<uint64_t> block, uint
 	return min + max;
 }
 
-
-
-std::string CartesianGenerator::generateCartesianTree(std::vector<uint64_t> numbers) {
-	// Use filling and method as proposed on Wikipedia.
-	// TODO implement
-	return "";
+uint64_t CartesianGenerator::generateCartesianTree(std::vector<uint64_t> numbers) {
+	CartesianNode* currentNode = new CartesianNode(numbers[0], nullptr);
+	CartesianTree* tree = new CartesianTree(currentNode);
+	for (uint64_t i = 1; i < numbers.size(); i++) {
+		while (true) {
+			if (currentNode->getValue() <= numbers[i]) {
+				// Insert as right child and make previous right child the left child of the new node
+				CartesianNode* newNode = new CartesianNode(numbers[i], currentNode, currentNode->getRightChild(), nullptr);
+				currentNode->getRightChild()->setParent(newNode);
+				currentNode->setRightChild(newNode);
+				break;
+			}
+			else if (currentNode == tree->getRoot()) {
+				// Insert as new root
+				CartesianNode* newNode = new CartesianNode(numbers[i], nullptr, currentNode, nullptr);
+				currentNode->setParent(newNode);
+				tree->setRoot(newNode);
+				break;
+			}
+			currentNode = currentNode->getParent();
+		}
+	}
+	// TODO Fill tree up and transform it to uint64_t format
 }
 
 void CartesianGenerator::generateAllCartesianTrees(uint64_t vectorSize) {
@@ -23,7 +41,7 @@ void CartesianGenerator::generateAllCartesianTrees(uint64_t vectorSize) {
 }
 
 CartesianGenerator::CartesianGenerator(std::vector<std::vector<uint64_t>*>* blocks) {
-	treeMap_ = new std::unordered_map <std::string, NaiveRMQ*>();
+	treeMap_ = new std::unordered_map <uint64_t, NaiveRMQ*>();
 	generateAllCartesianTrees(blocks->at(0)->size()); // The first block is always completely filled and therefore tells us the cartesian tree size
 	// TODO Generate NaiveRMQ for every block and insert them into treeMap_.
 }

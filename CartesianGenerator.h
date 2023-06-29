@@ -1,6 +1,5 @@
 #pragma once
 #include <unordered_map>
-#include <string>
 #include "NaiveRMQ.h"
 
 class CartesianGenerator {
@@ -8,10 +7,15 @@ class CartesianGenerator {
 private:
 
 	// The map storing all the possible cartesian trees and a corresponding rmq data structure.
-	std::unordered_map <std::string, NaiveRMQ*>* treeMap_;
+	std::unordered_map <uint64_t, NaiveRMQ*>* treeMap_;
 
-	// Generates the cartesian tree in string format for a given vector of numbers. Since 
-	std::string generateCartesianTree(std::vector<uint64_t> numbers);
+	/*
+	* Generates the cartesian tree in uint64_t for a given vector of numbers and fills them to give every node existing node 2 leaf children.
+	* The filling is needed to make the trees unique (because left/right child matters for cartesian trees!)
+	* The used bit representation and filling operation are the ones according to en.wikipedia.org/wiki/Range_minimum_query 
+	* (Solution using constant time and linear space)
+	*/ 
+	uint64_t generateCartesianTree(std::vector<uint64_t> numbers);
 
 	// Generates all possible cartesian trees for vectors of the given size. This method does not generate the corresponding rqm data structures.
 	void generateAllCartesianTrees(uint64_t vectorSize);

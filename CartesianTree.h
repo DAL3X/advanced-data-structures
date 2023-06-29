@@ -14,4 +14,7 @@ public:
 	CartesianTree(CartesianNode* root);
 	CartesianNode* getRoot();
 	void setRoot(CartesianNode* node);
+
+	//Deconstructor to free memory space
+	~CartesianTree();
 };

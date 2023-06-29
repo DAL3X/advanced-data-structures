@@ -10,3 +10,9 @@ CartesianNode*  CartesianTree::getRoot() {
 void CartesianTree::setRoot(CartesianNode* node) {
 	root_ = node;
 }
+
+CartesianTree::~CartesianTree() {
+	if (root_ != nullptr) {
+		delete root_;
+	}
+}
