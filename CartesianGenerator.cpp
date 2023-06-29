@@ -69,7 +69,7 @@ CartesianGenerator::CartesianGenerator(std::vector<std::vector<uint64_t>*>* bloc
 	generateAllCartesianTrees(blocks->at(0)->size()); // The first block is always completely filled and therefore tells us the cartesian tree size
 	// -----------------------------------------------------------------------------------
 	for (uint64_t i = 0; i < blocks->size(); i++) {
-		generateCartesianTree(*(blocks->at(i)));
+		uint64_t encodedTree = generateCartesianTree(*(blocks->at(i)));
 	}
 	// -----------------------------------------------------------------------------------
 	// TODO Generate NaiveRMQ for every block and insert them into treeMap_.
