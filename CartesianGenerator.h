@@ -12,8 +12,9 @@ private:
 	/*
 	* Generates the cartesian tree in uint64_t for a given vector of numbers and fills them to give every node existing node 2 leaf children.
 	* The filling is needed to make the trees unique (because left/right child matters for cartesian trees!)
-	* The used bit representation and filling operation are the ones according to en.wikipedia.org/wiki/Range_minimum_query 
+	* The filling operation are the ones according to en.wikipedia.org/wiki/Range_minimum_query.
 	* (Solution using constant time and linear space)
+	* The encoding is according to LOUDS.
 	*/ 
 	uint64_t generateCartesianTree(std::vector<uint64_t> numbers);
 

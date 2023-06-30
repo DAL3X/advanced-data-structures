@@ -20,19 +20,26 @@ void CartesianRMQ::splitInBlocks(std::vector<uint64_t> numbers) {
 	}
 }
 
-int64_t CartesianRMQ::rangeMinimumQuery(uint64_t min, uint64_t max) {
+uint64_t CartesianRMQ::rangeMinimumQuery(uint64_t min, uint64_t max) {
 	uint64_t minBorder = (uint64_t)floor(min / blockSize_);
 	uint64_t maxBorder = (uint64_t)floor(max / blockSize_);
+	bool checkForWholeBlocks = true;
 	uint64_t queryOne = ULLONG_MAX, queryTwo = ULLONG_MAX, queryThree = ULLONG_MAX;
 	if (min % blockSize_ != 0) { // We have a left subquery that we have to answer with cartesian trees.
 		queryOne = treeGenerator_->rangeMinimumQuery(*(blocks_->at(minBorder)), min - blockSize_ * minBorder, blockSize_ - 1);
+		if (minBorder == blocks_->size()) { // Query is only last block
+			checkForWholeBlocks = false;
+		}
 		minBorder++;
 	}
 	if ((max+1) % blockSize_ != 0) { // We have a right subquery that we have to answer with cartesian trees.
 		queryTwo = treeGenerator_->rangeMinimumQuery(*(blocks_->at(maxBorder)), 0, max - blockSize_ * maxBorder);
+		if (maxBorder == 0) { // Query is only first block
+			checkForWholeBlocks = false;
+		}
 		maxBorder--;
 	}
-	if (minBorder <= maxBorder) {
+	if (checkForWholeBlocks && minBorder <= maxBorder) { // Also check for borders of block array
 		uint64_t minBlockNum = blockRMQ_->rangeMinimumQuery(minBorder, maxBorder);
 		queryThree = blockMinimumPos_->at(minBlockNum) + minBlockNum * blockSize_; // Recieve and transform position of minimal number in found minimal block.
 	}
@@ -45,7 +52,7 @@ CartesianRMQ::CartesianRMQ(std::vector<uint64_t> numbers) {
 	blockMinimum_ = new std::vector<uint64_t>();
 	blockMinimumPos_ = new std::vector<uint64_t>();
 	totalSize_ = numbers.size();
-	blockSize_ = (int64_t)std::ceil(std::log2(totalSize_) / 4); // s = ceil(log(n)/4)
+	blockSize_ = (uint64_t)std::ceil(std::log2(totalSize_) / 4); // s = ceil(log(n)/4)
 	if (totalSize_ % blockSize_ != 0) { // Check for padding
 		uint64_t toFill = blockSize_ - (totalSize_ % blockSize_); // Tells us how many spaces we must fill
 		for (uint64_t i = 0; i < toFill; i++) {

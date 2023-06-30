@@ -32,6 +32,9 @@ public:
 	void setRightChild(CartesianNode* node);
 	void setParent(CartesianNode* node);
 
+	// Returns for number of children
+	uint64_t getNumberChildren();
+
 	CartesianNode(uint64_t value, CartesianNode* parent, CartesianNode* left, CartesianNode* right);
 	CartesianNode(uint64_t value, CartesianNode* parent);
 

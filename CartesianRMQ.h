@@ -56,7 +56,7 @@ public:
 	* @param min The minimum range for the query.
 	* @param max The maximum range for the query.
 	*/
-	int64_t rangeMinimumQuery(uint64_t min, uint64_t max);
+	uint64_t rangeMinimumQuery(uint64_t min, uint64_t max);
 
 	/**
 	* Constructs a CartesianRMQ to answer rmq queries in O(1) with O(n) space usage.

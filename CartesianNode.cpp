@@ -51,3 +51,15 @@ void CartesianNode::setRightChild(CartesianNode* node) {
 void CartesianNode::setParent(CartesianNode* node) {
 	parent_ = node;
 }
+
+uint64_t CartesianNode::getNumberChildren() {
+	if (left_ == nullptr && right_ == nullptr) {
+		return 0;
+	}
+	else if (left_ != nullptr && right_ != nullptr) {
+		return 2;
+	}
+	else { 
+		return 1; 
+	}
+}

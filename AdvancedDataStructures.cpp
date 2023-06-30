@@ -11,5 +11,5 @@ int main() {
         vect.push_back(i);
     }
     CartesianRMQ rmq = CartesianRMQ(vect);
-    std::cout << rmq.rangeMinimumQuery(4, 11) << std::endl;
+    std::cout << rmq.rangeMinimumQuery(0, 2) << std::endl;
 }
