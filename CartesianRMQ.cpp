@@ -24,27 +24,39 @@ uint64_t CartesianRMQ::rangeMinimumQuery(uint64_t min, uint64_t max) {
 	uint64_t minBorder = (uint64_t)floor(min / blockSize_);
 	uint64_t maxBorder = (uint64_t)floor(max / blockSize_);
 	bool checkForWholeBlocks = true;
-	uint64_t queryOne = ULLONG_MAX, queryTwo = ULLONG_MAX, queryThree = ULLONG_MAX;
+	uint64_t queryOnePos = ULLONG_MAX, queryTwoPos = ULLONG_MAX, queryThreePos = ULLONG_MAX;
+	uint64_t queryOneVal = ULLONG_MAX, queryTwoVal = ULLONG_MAX, queryThreeVal = ULLONG_MAX;
 	if (min % blockSize_ != 0) { // We have a left subquery that we have to answer with cartesian trees.
-		queryOne = treeGenerator_->rangeMinimumQuery(*(blocks_->at(minBorder)), min - blockSize_ * minBorder, blockSize_ - 1);
+		queryOnePos = treeGenerator_->rangeMinimumQuery(minBorder, min - blockSize_ * minBorder, blockSize_ - 1) + (blockSize_ * minBorder); // Global position
+		queryOneVal = blocks_->at(minBorder)->at(queryOnePos - (blockSize_ * minBorder)); // Use relative position in block to get value.
 		if (minBorder == blocks_->size()) { // Query is only last block
 			checkForWholeBlocks = false;
 		}
 		minBorder++;
 	}
 	if ((max+1) % blockSize_ != 0) { // We have a right subquery that we have to answer with cartesian trees.
-		queryTwo = treeGenerator_->rangeMinimumQuery(*(blocks_->at(maxBorder)), 0, max - blockSize_ * maxBorder);
+		queryTwoPos = treeGenerator_->rangeMinimumQuery(maxBorder, 0, max - blockSize_ * maxBorder) + (blockSize_ * maxBorder); // Global position
+		queryTwoVal = blocks_->at(maxBorder)->at(queryTwoPos - (blockSize_ * maxBorder)); // Use relative position in block to get value.
 		if (maxBorder == 0) { // Query is only first block
 			checkForWholeBlocks = false;
 		}
 		maxBorder--;
 	}
-	if (checkForWholeBlocks && minBorder <= maxBorder) { // Also check for borders of block array
+	if (checkForWholeBlocks && minBorder <= maxBorder) { // We have one or more complete blocks between that are still part of the query. 
 		uint64_t minBlockNum = blockRMQ_->rangeMinimumQuery(minBorder, maxBorder);
-		queryThree = blockMinimumPos_->at(minBlockNum) + minBlockNum * blockSize_; // Recieve and transform position of minimal number in found minimal block.
+		queryThreePos = blockMinimumPos_->at(minBlockNum) + minBlockNum * blockSize_; // Recieve and transform to global position of minimal number in found minimal block.
+		queryThreeVal = blocks_->at(minBlockNum)->at(queryThreePos - (minBlockNum * blockSize_)); // Use relative position in block to get value.
 	}
-
-	return std::min({ queryOne, queryTwo, queryThree });
+	uint64_t minimumQueryVal = std::min({ queryOneVal, queryTwoVal, queryThreeVal });
+	if (minimumQueryVal == queryOneVal) {
+		return queryOnePos;
+	}
+	else if (minimumQueryVal == queryTwoVal) {
+		return queryTwoPos;
+	}
+	else { // minimumQueryVal == queryThreeVal
+		return queryThreePos;
+	}
 }
 
 CartesianRMQ::CartesianRMQ(std::vector<uint64_t> numbers) {
