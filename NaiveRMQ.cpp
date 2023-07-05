@@ -9,7 +9,7 @@ NaiveRMQ::NaiveRMQ(std::vector<uint64_t> numbers) {
 	savedAnswers = new std::vector<uint64_t>(size*size); // We use the 1D vector as a 2D vector.
 	for (uint64_t i = 0; i < size; i++) {
 		uint64_t min = i;
-		for (uint64_t j = i+1; j < size; j++) {
+		for (uint64_t j = i; j < size; j++) {
 			if (numbers[j] < numbers[min]) {
 				min = j;
 			}

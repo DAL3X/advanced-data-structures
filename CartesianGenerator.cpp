@@ -96,7 +96,7 @@ CartesianGenerator::CartesianGenerator(std::vector<std::vector<uint64_t>*>* bloc
 	blockTrees_ = new std::vector<uint64_t>();
 	for (uint64_t i = 0; i < blocks->size(); i++) {
 		uint64_t encodedTree = generateCartesianTree(blocks->at(i));
-		treeMap_->insert({ encodedTree, new NaiveRMQ(*(blocks->at(i))) });
+		treeMap_->insert({ encodedTree, new NaiveRMQ(*(blocks->at(i))) }); // If already present in map, this does nothing. O(1)
 		blockTrees_->push_back(encodedTree);
 	}
 }

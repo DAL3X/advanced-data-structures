@@ -26,6 +26,9 @@ uint64_t CartesianRMQ::rangeMinimumQuery(uint64_t min, uint64_t max) {
 	bool checkForWholeBlocks = true;
 	uint64_t queryOnePos = ULLONG_MAX, queryTwoPos = ULLONG_MAX, queryThreePos = ULLONG_MAX;
 	uint64_t queryOneVal = ULLONG_MAX, queryTwoVal = ULLONG_MAX, queryThreeVal = ULLONG_MAX;
+	if (minBorder == maxBorder) { // Whole query is only one block
+		return treeGenerator_->rangeMinimumQuery(minBorder, min - blockSize_ * minBorder, max - blockSize_ * minBorder) + (blockSize_ * minBorder);
+	}
 	if (min % blockSize_ != 0) { // We have a left subquery that we have to answer with cartesian trees.
 		queryOnePos = treeGenerator_->rangeMinimumQuery(minBorder, min - blockSize_ * minBorder, blockSize_ - 1) + (blockSize_ * minBorder); // Global position
 		queryOneVal = blocks_->at(minBorder)->at(queryOnePos - (blockSize_ * minBorder)); // Use relative position in block to get value.
