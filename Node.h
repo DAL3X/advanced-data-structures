@@ -8,7 +8,7 @@ class Node {
 
 private:
 	// The value this node holds.
-	std::int64_t value_ = 0;
+	std::uint64_t value_ = 0;
 
 	// The left child.
 	Node* left_ = nullptr;
@@ -38,9 +38,9 @@ public:
 	* 
 	* @return the value for this node.
 	*/
-	int64_t getValue();
+	uint64_t getValue();
 
-	Node(int64_t value, Node* leftNode, Node* rightNode);
+	Node(uint64_t value, Node* leftNode, Node* rightNode);
 
 	/**
 	* Cleans up the lower nodes to avoid memory leaks.

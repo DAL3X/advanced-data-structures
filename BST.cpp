@@ -10,7 +10,7 @@
 	* @param leftRange Left border for recursive construction. Starts at 0.
 	* @param rightRange Right border for recursive construction. Starts at values.size().
 	*/
-	Node* build(std::vector<int64_t> values, int64_t leftRange, int64_t rightRange) {
+	Node* build(std::vector<uint64_t> values, int64_t leftRange, int64_t rightRange) {
 		if (leftRange > rightRange) {
 			return nullptr;
 		}
@@ -27,7 +27,7 @@
 	* @params maxFound The best predecessor candidate found so far. Starts with root's value.
 	* @param limit The number we want to find the predecessor for.
 	*/
-	int64_t getPredecessorInternal(Node* node, int64_t maxFound, int64_t limit) {
+	int64_t getPredecessorInternal(Node* node, uint64_t maxFound, uint64_t limit) {
 		if (node == nullptr) {
 			// End of tree
 			return maxFound;
@@ -46,7 +46,7 @@
 		}
 	}
 
-	int64_t BST::getPredecessor(int64_t maxFound, int64_t limit) {
+	uint64_t BST::getPredecessor(uint64_t maxFound, uint64_t limit) {
 		return getPredecessorInternal(root_, maxFound, limit);
 	}
 
@@ -56,7 +56,7 @@
 	}
 
 
-	BST::BST(std::vector<int64_t> values) :
+	BST::BST(std::vector<uint64_t> values) :
 		root_(build(values, 0, values.size() - 1)) {}
 
 

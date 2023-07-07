@@ -11,12 +11,12 @@
 	}
 
 
-	int64_t Node::getValue() {
+	uint64_t Node::getValue() {
 		return value_;
 	}
 
 
-	Node::Node(int64_t value, Node* left, Node* right):
+	Node::Node(uint64_t value, Node* left, Node* right):
 		value_(value),
 		left_(left),
 		right_(right) {}

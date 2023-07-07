@@ -15,7 +15,7 @@ class YTrie {
 
 private:
 	// Depth of the trie.
-	int64_t depth_;
+	uint64_t depth_;
 
 	// Vector of corresponding representants for all provided values.
 	std::vector<TrieNode*> representatives_ = *(new std::vector<TrieNode*>);
@@ -27,7 +27,7 @@ private:
 	* Splits the given values into their representatives and creates TrieNodes for them.
 	* They are then linked to obtain the "leaf level" for our final trie.
 	*/
-	void split(std::vector <int64_t> values);
+	void split(std::vector <uint64_t> values);
 
 	/**
 	* Constructs the trie by creating all inner trie nodes and putting them into the lookup_ HashMap for later use.
@@ -46,13 +46,13 @@ private:
 	* @param leftRange The left border to check for splitting points. Starts at 0.
 	* @param rightRange The right border to check for splitting points. Starts at representatives length.
 	*/
-	void constructTrie(std::vector<TrieNode*>* representatives, std::vector<int64_t>* representativeValues, int64_t exponent, std::string bitHistory, int64_t leftRange, int64_t rightRange);
+	void constructTrie(std::vector<TrieNode*>* representatives, std::vector<uint64_t>* representativeValues, int64_t exponent, std::string bitHistory, int64_t leftRange, int64_t rightRange);
 
 public:
 	/**
 	* Constructs and prepares the Y-Trie initialized with the given values.
 	*/
-	YTrie(std::vector<int64_t> values);
+	YTrie(std::vector<uint64_t> values);
 
 	/**
 	* Performs the predecessor query.
@@ -63,5 +63,5 @@ public:
 	* 
 	* @param limit The number we want to find the predeccesor of.
 	*/
-	int64_t getPredecessor(int64_t limit);
+	int64_t getPredecessor(uint64_t limit);
 };

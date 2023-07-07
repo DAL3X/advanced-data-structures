@@ -6,7 +6,7 @@ bool TrieNode::isLeaf() {
 }
 
 
-int64_t TrieNode::getValue() {
+uint64_t TrieNode::getValue() {
 	return value_;
 }
 
@@ -58,7 +58,7 @@ TrieNode::TrieNode(TrieNode* leftMax, TrieNode* rightMin) :
 	leftMax_(leftMax),
 	rightMin_(rightMin) {}
 
-TrieNode::TrieNode(int64_t value, TrieNode* previous, BST* tree) :
+TrieNode::TrieNode(uint64_t value, TrieNode* previous, BST* tree) :
 	leaf_(true),
 	value_(value),
 	leftMax_(previous),

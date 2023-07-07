@@ -21,7 +21,7 @@ private:
 	BST* tree_ = nullptr; 
 
 	// Set to max so predecessor queries fail when not set.
-	int64_t value_ = LLONG_MAX;
+	uint64_t value_ = LLONG_MAX;
 
 public:
 
@@ -31,7 +31,7 @@ public:
 	* Only for leaves!
 	* Using it on inner nodes returns the maximum possible integer.
 	*/
-	int64_t getValue();
+	uint64_t getValue();
 
 	/**
 	* Only for inner nodes!
@@ -82,6 +82,6 @@ public:
 	* Constructs a leaf. 
 	* Next cannot be set here, since the nodes are generated from left to right.
 	*/
-	TrieNode(int64_t value, TrieNode* previous, BST* tree);
+	TrieNode(uint64_t value, TrieNode* previous, BST* tree);
 
 };

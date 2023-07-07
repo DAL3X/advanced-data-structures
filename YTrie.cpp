@@ -9,16 +9,16 @@
 * Eg. with only 32 bit numbers or smaller (even in 64 bit format), we can half the depth of the Trie.
 * The depth is given as the number of bits used to represent the largest number in the input values.
 */
-int64_t calcDepth(std::vector <int64_t> values) {
+int64_t calcDepth(std::vector <uint64_t> values) {
 	return (int64_t)std::floor(std::log2(values.back()));
 }
 
 /**
 * 
 */
-BST* constructBST(int64_t position, int64_t groupSize, std::vector <int64_t> values) {
+BST* constructBST(uint64_t position, uint64_t groupSize, std::vector <uint64_t> values) {
 	// Isolate the group with the given size for the representative on the given position 
-	std::vector<int64_t> group(values.begin() + position - (groupSize - 1), values.begin() + position + 1);
+	std::vector<uint64_t> group(values.begin() + position - (groupSize - 1), values.begin() + position + 1);
 	BST* tree = new BST(group);
 	return tree;
 }
@@ -31,7 +31,7 @@ BST* constructBST(int64_t position, int64_t groupSize, std::vector <int64_t> val
 * @param representatives A vector of all representatives so far in TrieNode format.
 * @param depth The trie depth.
 */
-void addRegularTrieLeaf(std::vector<int64_t> values, int64_t index, std::vector<TrieNode*>* representatives, int64_t depth) {
+void addRegularTrieLeaf(std::vector<uint64_t> values, uint64_t index, std::vector<TrieNode*>* representatives, uint64_t depth) {
 	int64_t maxIndex = values.size() - 1;
 	if (index == depth - 1) {
 		// First to add has nullptr as previous
@@ -52,13 +52,13 @@ void addRegularTrieLeaf(std::vector<int64_t> values, int64_t index, std::vector<
 * @param representatives A vector of all representatives so far in TrieNode format.
 * @param depth The trie depth.
 */
-void addIrregularTrieLeaf(std::vector<int64_t> values, std::vector<TrieNode*>* representatives, int64_t depth) {
+void addIrregularTrieLeaf(std::vector<uint64_t> values, std::vector<TrieNode*>* representatives, uint64_t depth) {
 	representatives->push_back(new TrieNode(values.back(), representatives->back(), constructBST(values.size() - 1, values.size() % depth, values)));
 	(*representatives)[representatives->size() - 2]->setNext((*representatives)[representatives->size() - 1]);
 }
 
 
-void YTrie::split(std::vector <int64_t> values) {
+void YTrie::split(std::vector <uint64_t> values) {
 	for (int64_t i = depth_ - 1; i < values.size(); i = i + depth_) {
 		// Store the representative and construct the BST for it.
 		addRegularTrieLeaf(values, i, &representatives_, depth_);
@@ -70,7 +70,7 @@ void YTrie::split(std::vector <int64_t> values) {
 }
 
 // For the whole trie: 0 = left, 1 = right
-void YTrie::constructTrie(std::vector<TrieNode*>* representatives, std::vector<int64_t>* representativeValues,
+void YTrie::constructTrie(std::vector<TrieNode*>* representatives, std::vector<uint64_t>* representativeValues,
 	int64_t exponent, std::string bitHistory, int64_t leftRange, int64_t rightRange) {
 	int64_t split = 1LL << exponent; // 2^exponent is the border to split
 	if (exponent != -1) { // Construct inner node
@@ -117,10 +117,10 @@ void YTrie::constructTrie(std::vector<TrieNode*>* representatives, std::vector<i
 }
 
 
-YTrie::YTrie(std::vector<int64_t> values) :
+YTrie::YTrie(std::vector<uint64_t> values) :
 	depth_(calcDepth(values)) {
 	split(values);
-	std::vector<int64_t> representativeValues;
+	std::vector<uint64_t> representativeValues;
 	for (int i = 0; i < representatives_.size(); i++) {
 		representativeValues.push_back(representatives_[i]->getValue());
 	}
@@ -128,7 +128,7 @@ YTrie::YTrie(std::vector<int64_t> values) :
 }
 
 
-int64_t YTrie::getPredecessor(int64_t limit) {
+int64_t YTrie::getPredecessor(uint64_t limit) {
 	int64_t lowRange = 0;
 	int64_t highRange = depth_ + 1;
 	std::string fullBitString = std::bitset<64>(limit).to_string().substr(64-(depth_+1)); // Input bit-string with same length as representants

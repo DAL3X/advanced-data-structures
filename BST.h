@@ -21,7 +21,7 @@ public:
 	* @param maxSmallerTree The maximum (representant) of the left neighbour tree in the Y-Trie.
 	* @param limit The number, for which we want to find the predecessor.
 	*/
-	int64_t getPredecessor(int64_t maxSmallerTree, int64_t limit);
+	uint64_t getPredecessor(uint64_t maxSmallerTree, uint64_t limit);
 
 	Node* getRoot();
 
@@ -31,7 +31,7 @@ public:
 	* 
 	* @params values The vector of numbers, which should be used to construct the binary search tree.
 	*/
-	BST(std::vector<int64_t> values);
+	BST(std::vector<uint64_t> values);
 
 	~BST();
 };
