@@ -63,5 +63,5 @@ public:
 	* 
 	* @param limit The number we want to find the predeccesor of.
 	*/
-	int64_t getPredecessor(uint64_t limit);
+	uint64_t getPredecessor(uint64_t limit);
 };

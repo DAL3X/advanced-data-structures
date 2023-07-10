@@ -1,6 +1,7 @@
 #include "YTrie.h"
 #include <cmath>
 #include <bitset>
+#include <climits>
 
 /*
 * Calculates the depth needed for the trie.
@@ -128,7 +129,7 @@ YTrie::YTrie(std::vector<uint64_t> values) :
 }
 
 
-int64_t YTrie::getPredecessor(uint64_t limit) {
+uint64_t YTrie::getPredecessor(uint64_t limit) {
 	int64_t lowRange = 0;
 	int64_t highRange = depth_ + 1;
 	std::string fullBitString = std::bitset<64>(limit).to_string().substr(64-(depth_+1)); // Input bit-string with same length as representants
@@ -177,7 +178,7 @@ int64_t YTrie::getPredecessor(uint64_t limit) {
 		}
 		else {
 			// Something went wrong
-			return LLONG_MAX;
+			return ULLONG_MAX;
 		}
 	}
 }

@@ -42,23 +42,46 @@ void readInRMQFile(std::string path, std::vector<uint64_t>* values, std::vector<
 	}
 }
 
+void writeAnswerFile(std::string path, std::vector<uint64_t>* answers) {
+	std::ofstream file(path);
+	for (uint64_t i = 0; i < answers->size(); i++) {
+		file << answers->at(i) << std::endl;
+	}
+	file.close();
+}
+
 int main(int argc, const char** argv) {
-
-	std::string selection = std::string(argv[0]);
-	std::string inputFile = std::string(argv[1]);
-	std::string outputFile = std::string(argv[2]);
-
+	std::string selection = std::string(argv[1]);
+	std::string inputFile = std::string(argv[2]);
+	std::string outputFile = std::string(argv[3]);
+	std::vector<uint64_t> values;
+	std::vector<uint64_t> answers;
 	if (selection == "pd") {
-		std::vector<uint64_t>* values = new std::vector<uint64_t>();
-		std::vector<uint64_t>* queries = new std::vector<uint64_t>();
-		readInPredecessorFile(inputFile, values, queries);
-		int i = 0;
+		std::vector<uint64_t> queries;
+		readInPredecessorFile(inputFile, &values, &queries);
+		// Start timing
+		YTrie predecessor = YTrie(values);
+		for (uint64_t i = 0; i < queries.size(); i++) {
+			answers.push_back(predecessor.getPredecessor(queries[i]));
+		}
+		// Get space util
+		// End timing
 	}
 	else if (selection == "rmq") {
-		std::vector<uint64_t>* values = new std::vector<uint64_t>();
-		std::vector<std::pair<uint64_t, uint64_t>>* queries = new std::vector<std::pair<uint64_t, uint64_t>>();
-		readInRMQFile(inputFile, values, queries);
-		int i = 0;
+		std::vector<std::pair<uint64_t, uint64_t>> queries;
+		readInRMQFile(inputFile, &values, &queries);
+		// Start timing
+		CartesianRMQ rmq = CartesianRMQ(values);
+		for (uint64_t i = 0; i < queries.size(); i++) {
+			answers.push_back(rmq.rangeMinimumQuery(queries[i].first, queries[i].second));
+		}
+		// Get space util
+		// End timing
 	}
+	else {
+		return 1;
+	}
+	// Output time and space information
+	writeAnswerFile(outputFile, &answers);
 	return 0;
 }
