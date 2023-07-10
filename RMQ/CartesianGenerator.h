@@ -13,7 +13,7 @@ private:
 	std::vector<uint64_t>* blockTrees_;
 
 	/*
-	* Generates the cartesian tree in uint64_t for a given vector of numbers and fills them to give every node existing node 2 leaf children.
+	* Generates the cartesian tree for a given vector of numbers and fills them to give every node exactly 2 children.
 	* The filling is needed to make the trees unique (because left/right child matters for cartesian trees!)
 	* The filling operation are the ones according to en.wikipedia.org/wiki/Range_minimum_query.
 	* (Solution using constant time and linear space)
