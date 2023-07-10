@@ -2,12 +2,10 @@
 #include <cstdint>
 #include <vector>
 #include <string>
-#include <iostream>
-#include <vector>
 #include <fstream>
 #include <utility>
-#include "CartesianRMQ.h"
-#include "YTrie.h"
+#include "RMQ/CartesianRMQ.h"
+#include "Predecessor/YTrie.h"
 
 void readInPredecessorFile(std::string path, std::vector<uint64_t>* values, std::vector<uint64_t>* queries) {
 	std::ifstream file(path);
