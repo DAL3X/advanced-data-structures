@@ -2,6 +2,7 @@
 #include "CartesianTree.h"
 #include <queue>
 #include <cmath>
+#include <climits>
 
 
 

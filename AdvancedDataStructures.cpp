@@ -42,20 +42,22 @@ void readInRMQFile(std::string path, std::vector<uint64_t>* values, std::vector<
 	}
 }
 
-int main(int argc, char** argv) {
+int main(int argc, const char** argv) {
 
-	//TODO process input arguments
-	int choose = 0;
-	if (choose == 0) {
+	std::string selection = std::string(argv[0]);
+	std::string inputFile = std::string(argv[1]);
+	std::string outputFile = std::string(argv[2]);
+
+	if (selection == "pd") {
 		std::vector<uint64_t>* values = new std::vector<uint64_t>();
 		std::vector<uint64_t>* queries = new std::vector<uint64_t>();
-		readInPredecessorFile("..\\Project\\predecessor_examples\\predecessor_example_1.txt", values, queries);
+		readInPredecessorFile(inputFile, values, queries);
 		int i = 0;
 	}
-	else {
+	else if (selection == "rmq") {
 		std::vector<uint64_t>* values = new std::vector<uint64_t>();
 		std::vector<std::pair<uint64_t, uint64_t>>* queries = new std::vector<std::pair<uint64_t, uint64_t>>();
-		readInRMQFile("..\\Project\\rmq_examples\\rmq_example_1.txt", values, queries);
+		readInRMQFile(inputFile, values, queries);
 		int i = 0;
 	}
 	return 0;

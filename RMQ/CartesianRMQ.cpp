@@ -1,5 +1,7 @@
 #include "CartesianRMQ.h"
 #include <cmath>
+#include <algorithm>
+#include <climits>
 
 void CartesianRMQ::splitInBlocks(std::vector<uint64_t> numbers) {
 	uint64_t numBlocks = totalPaddedSize_ / blockSize_;

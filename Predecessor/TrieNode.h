@@ -1,5 +1,6 @@
 #pragma once
 #include <cstdint>
+#include <climits>
 #include "BST.h"
 
 /**
@@ -21,7 +22,7 @@ private:
 	BST* tree_ = nullptr; 
 
 	// Set to max so predecessor queries fail when not set.
-	uint64_t value_ = LLONG_MAX;
+	uint64_t value_ = ULLONG_MAX;
 
 public:
 
