@@ -4,8 +4,10 @@
 #include <string>
 #include <fstream>
 #include <utility>
+#include <chrono>
 #include "RMQ/CartesianRMQ.h"
 #include "Predecessor/YTrie.h"
+#include "malloc_count/malloc_count.h" // Use of external library was allowed via mail on the 3. of june.
 
 void readInPredecessorFile(std::string path, std::vector<uint64_t>* values, std::vector<uint64_t>* queries) {
 	std::ifstream file(path);
@@ -54,34 +56,41 @@ int main(int argc, const char** argv) {
 	std::string selection = std::string(argv[1]);
 	std::string inputFile = std::string(argv[2]);
 	std::string outputFile = std::string(argv[3]);
+	std::chrono::milliseconds duration;
+	uint memory;
 	std::vector<uint64_t> values;
-	std::vector<uint64_t> answers;
+	std::vector<uint64_t> *answers = new std::vector<uint64_t>();
 	if (selection == "pd") {
 		std::vector<uint64_t> queries;
 		readInPredecessorFile(inputFile, &values, &queries);
-		// Start timing
-		YTrie predecessor = YTrie(values);
+		auto startTiming = std::chrono::high_resolution_clock::now();
+		// Now build the datastructure and answer all queries.
+		YTrie *predecessor = new YTrie(values);
 		for (uint64_t i = 0; i < queries.size(); i++) {
-			answers.push_back(predecessor.getPredecessor(queries[i]));
+			answers->push_back(predecessor->getPredecessor(queries[i]));
 		}
-		// Get space util
-		// End timing
+		auto endTiming = std::chrono::high_resolution_clock::now();
+		duration = std::chrono::duration_cast<std::chrono::milliseconds>(endTiming- startTiming);
+		memory = malloc_count_current();
 	}
 	else if (selection == "rmq") {
 		std::vector<std::pair<uint64_t, uint64_t>> queries;
 		readInRMQFile(inputFile, &values, &queries);
-		// Start timing
-		CartesianRMQ rmq = CartesianRMQ(values);
+		auto startTiming = std::chrono::high_resolution_clock::now();
+		// Now build the datastructure and answer all queries.
+		CartesianRMQ *rmq = new CartesianRMQ(values);
 		for (uint64_t i = 0; i < queries.size(); i++) {
-			answers.push_back(rmq.rangeMinimumQuery(queries[i].first, queries[i].second));
+			answers->push_back(rmq->rangeMinimumQuery(queries[i].first, queries[i].second));
 		}
-		// Get space util
-		// End timing
+		auto endTiming = std::chrono::high_resolution_clock::now();
+		duration = std::chrono::duration_cast<std::chrono::milliseconds>(endTiming- startTiming);
+		memory = malloc_count_current();
 	}
 	else {
 		return 1;
 	}
-	// Output time and space information
-	writeAnswerFile(outputFile, &answers);
+	memory = memory * 8; // Cast from bytes to bits
+	writeAnswerFile(outputFile, answers);
+	std::cout << "RESULT " << "algo=" << selection << " name=simon_bothe" << " time=" << duration.count() << " space=" << memory << std::endl;
 	return 0;
 }

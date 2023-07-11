@@ -119,7 +119,8 @@ void YTrie::constructTrie(std::vector<TrieNode*>* representatives, std::vector<u
 
 
 YTrie::YTrie(std::vector<uint64_t> values) :
-	depth_(calcDepth(values)) {
+	depth_(calcDepth(values)), 
+	minimalValue_(values[0]) {
 	split(values);
 	std::vector<uint64_t> representativeValues;
 	for (int i = 0; i < representatives_.size(); i++) {
@@ -130,6 +131,9 @@ YTrie::YTrie(std::vector<uint64_t> values) :
 
 
 uint64_t YTrie::getPredecessor(uint64_t limit) {
+	if (limit < minimalValue_) {
+		return ULLONG_MAX;
+	}
 	int64_t lowRange = 0;
 	int64_t highRange = depth_ + 1;
 	std::string fullBitString = std::bitset<64>(limit).to_string().substr(64-(depth_+1)); // Input bit-string with same length as representants

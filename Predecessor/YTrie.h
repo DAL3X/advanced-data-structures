@@ -23,6 +23,9 @@ private:
 	// HashMap for performing a binary search on trie levels.
 	std::unordered_map<std::string, TrieNode*> lookup_ = *(new std::unordered_map<std::string, TrieNode*>);
 
+	// Minimal value in this trie. Used for lower boundary detection.
+	uint64_t minimalValue_;
+
 	/**
 	* Splits the given values into their representatives and creates TrieNodes for them.
 	* They are then linked to obtain the "leaf level" for our final trie.

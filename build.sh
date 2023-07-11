@@ -1,2 +1,2 @@
 #! /bin/bash
-g++ -o ads_programm *.cpp Predecessor/*.cpp RMQ/*.cpp
+g++ -o ads_programm *.cpp Predecessor/*.cpp RMQ/*.cpp malloc_count/*.c
