@@ -53,6 +53,10 @@ void writeAnswerFile(std::string path, std::vector<uint64_t>* answers) {
 }
 
 int main(int argc, const char** argv) {
+	return runProgram(argc, argv);
+}
+
+int runProgram(int argc, const char** argv) {
 	std::string selection = std::string(argv[1]);
 	std::string inputFile = std::string(argv[2]);
 	std::string outputFile = std::string(argv[3]);

@@ -2,6 +2,7 @@
 #include <cmath>
 #include <bitset>
 #include <climits>
+#include <iostream>
 
 // For the whole trie: 0 = left, 1 = right
 
@@ -36,13 +37,16 @@ void splitPointSearch(std::vector<TrieNode*>* representatives, uint64_t *splitpo
 	uint64_t bestSplit = ULLONG_MAX;
 	while (leftRange <= rightRange) {
 		uint64_t middle = leftRange + ((rightRange  - leftRange) / 2);
-		uint64_t checkSum = (representatives->at(middle)->getValue() | split) >> exponent; // 1 if bit set, 0 else.
+		uint64_t checkSum = (representatives->at(middle)->getValue() & split) >> exponent; // 1 if bit set, 0 else.
 		if (checkSum == 1) {
 			bestSplit = middle;
 			rightRange = middle - 1;
+			if (middle == 0) {
+				break;
+			}
 		}
 		else { // checkSum == 0
-			leftRange == middle + 1;
+			leftRange = middle + 1;
 		}
 	}
 	if (bestSplit == ULLONG_MAX) {
