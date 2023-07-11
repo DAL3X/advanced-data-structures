@@ -3,6 +3,8 @@
 #include <bitset>
 #include <climits>
 
+// For the whole trie: 0 = left, 1 = right
+
 /*
 * Calculates the depth needed for the trie.
 * Since the numbers are max 64 bits, we could just assume depth = 64.
@@ -22,6 +24,37 @@ BST* constructBST(uint64_t position, uint64_t groupSize, std::vector <uint64_t> 
 	std::vector<uint64_t> group(values.begin() + position - (groupSize - 1), values.begin() + position + 1);
 	BST* tree = new BST(group);
 	return tree;
+}
+
+/**
+ * Performs a binary search on representatives between leftRange and rightRange to find out at which splitpoint the values contain a 1 at position exponent.
+ * This only works because we start with an exponent that is the highest occurring set bit in all values and gradually go lower.
+ * This function also requires the representative vector to not be as long as ULLONG_MAX;
+*/
+void splitPointSearch(std::vector<TrieNode*>* representatives, uint64_t *splitpoint, TrieNode* leftMax, TrieNode* rightMin, int64_t exponent, uint64_t leftRange, uint64_t rightRange) {
+	uint64_t split = 1LL << exponent; // 2^exponent is the border to split
+	uint64_t bestSplit = ULLONG_MAX;
+	while (leftRange <= rightRange) {
+		uint64_t middle = leftRange + ((rightRange  - leftRange) / 2);
+		uint64_t checkSum = (representatives->at(middle)->getValue() | split) >> exponent; // 1 if bit set, 0 else.
+		if (checkSum == 1) {
+			bestSplit = middle;
+			rightRange = middle - 1;
+		}
+		else { // checkSum == 0
+			leftRange == middle + 1;
+		}
+	}
+	if (bestSplit == ULLONG_MAX) {
+		leftMax = representatives->at(rightRange);
+	}
+	else {
+		*splitpoint = bestSplit;
+		rightMin = representatives->at(bestSplit);
+		if (bestSplit != leftRange) {
+			leftMax = representatives->at(bestSplit - 1);
+		}
+	}
 }
 
 /*
@@ -70,29 +103,13 @@ void YTrie::split(std::vector <uint64_t> values) {
 	}
 }
 
-// For the whole trie: 0 = left, 1 = right
-void YTrie::constructTrie(std::vector<TrieNode*>* representatives, std::vector<uint64_t>* representativeValues,
-	int64_t exponent, std::string bitHistory, int64_t leftRange, int64_t rightRange) {
-	int64_t split = 1LL << exponent; // 2^exponent is the border to split
+
+void YTrie::constructTrie(std::vector<TrieNode*>* representatives, int64_t exponent, std::string bitHistory, uint64_t leftRange, uint64_t rightRange) {
 	if (exponent != -1) { // Construct inner node
-		int64_t splitIndex = rightRange + 1;
+		uint64_t splitIndex = rightRange + 1;
 		TrieNode* leftMax = nullptr;
 		TrieNode* rightMin = nullptr;
-		bool foundSplit = false; 
-		// Attempt to find a split point
-		for (int64_t i = leftRange; i <= rightRange; i++) {
-			if ((*representativeValues)[i] >= split) { // Found split point
-				if (!foundSplit) { // Found split point for the first time
-					splitIndex = i;
-					foundSplit = true;
-					if (i != leftRange) {
-						leftMax = (*representatives)[i - 1];
-					}
-					rightMin = (*representatives)[i];
-				}
-				(*representativeValues)[i] = (*representativeValues)[i] - split; // Because of the way the numbers are iterated, these can never create a negative value
-			}
-		}
+		splitPointSearch(representatives, &splitIndex, leftMax, rightMin, exponent, leftRange, rightRange);
 		if (leftMax == nullptr && rightMin == nullptr) { // No split was found, all representant belong to the left side of this inner node
 			leftMax = (*representatives)[rightRange];
 		}
@@ -100,11 +117,11 @@ void YTrie::constructTrie(std::vector<TrieNode*>* representatives, std::vector<u
 		lookup_.insert({ bitHistory, node });
 		if (splitIndex > leftRange) { // Construct left subtree
 			std::string leftMaskHistory = bitHistory;
-			constructTrie(representatives, representativeValues, exponent - 1, leftMaskHistory.append("0"), leftRange, splitIndex - 1);
+			constructTrie(representatives, (exponent - 1), leftMaskHistory.append("0"), leftRange, splitIndex - 1);
 		}
 		if (splitIndex <= rightRange) { // Construct right subtree
 			std::string rightMaskHistory = bitHistory;
-			constructTrie(representatives, representativeValues, exponent - 1, rightMaskHistory.append("1"), splitIndex, rightRange);
+			constructTrie(representatives, exponent - 1, rightMaskHistory.append("1"), splitIndex, rightRange);
 		}
 	}
 	else { // Add the leafs
@@ -123,10 +140,7 @@ YTrie::YTrie(std::vector<uint64_t> values) :
 	minimalValue_(values[0]) {
 	split(values);
 	std::vector<uint64_t> representativeValues;
-	for (int i = 0; i < representatives_.size(); i++) {
-		representativeValues.push_back(representatives_[i]->getValue());
-	}
-	constructTrie(&representatives_, &representativeValues, depth_, "", 0, (representatives_.size() - 1));
+	constructTrie(&representatives_, depth_, "", 0, (representatives_.size() - 1));
 }
 
 

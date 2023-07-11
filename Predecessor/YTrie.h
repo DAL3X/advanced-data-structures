@@ -49,7 +49,7 @@ private:
 	* @param leftRange The left border to check for splitting points. Starts at 0.
 	* @param rightRange The right border to check for splitting points. Starts at representatives length.
 	*/
-	void constructTrie(std::vector<TrieNode*>* representatives, std::vector<uint64_t>* representativeValues, int64_t exponent, std::string bitHistory, int64_t leftRange, int64_t rightRange);
+	void constructTrie(std::vector<TrieNode*>* representatives, int64_t exponent, std::string bitHistory, uint64_t leftRange, uint64_t rightRange);
 
 public:
 	/**
