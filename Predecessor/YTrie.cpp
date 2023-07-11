@@ -2,7 +2,6 @@
 #include <cmath>
 #include <bitset>
 #include <climits>
-#include <iostream>
 
 // For the whole trie: 0 = left, 1 = right
 
@@ -32,7 +31,7 @@ BST* constructBST(uint64_t position, uint64_t groupSize, std::vector <uint64_t> 
  * This only works because we start with an exponent that is the highest occurring set bit in all values and gradually go lower.
  * This function also requires the representative vector to not be as long as ULLONG_MAX;
 */
-void splitPointSearch(std::vector<TrieNode*>* representatives, uint64_t *splitpoint, TrieNode* leftMax, TrieNode* rightMin, int64_t exponent, uint64_t leftRange, uint64_t rightRange) {
+void splitPointSearch(std::vector<TrieNode*>* representatives, uint64_t *splitpoint, TrieNode** leftMax, TrieNode** rightMin, int64_t exponent, uint64_t leftRange, uint64_t rightRange) {
 	uint64_t split = 1LL << exponent; // 2^exponent is the border to split
 	uint64_t bestSplit = ULLONG_MAX;
 	while (leftRange <= rightRange) {
@@ -40,23 +39,23 @@ void splitPointSearch(std::vector<TrieNode*>* representatives, uint64_t *splitpo
 		uint64_t checkSum = (representatives->at(middle)->getValue() & split) >> exponent; // 1 if bit set, 0 else.
 		if (checkSum == 1) {
 			bestSplit = middle;
-			rightRange = middle - 1;
 			if (middle == 0) {
 				break;
 			}
+			rightRange = middle - 1;
 		}
 		else { // checkSum == 0
 			leftRange = middle + 1;
 		}
 	}
 	if (bestSplit == ULLONG_MAX) {
-		leftMax = representatives->at(rightRange);
+		*leftMax = representatives->at(rightRange);
 	}
 	else {
 		*splitpoint = bestSplit;
-		rightMin = representatives->at(bestSplit);
+		*rightMin = representatives->at(bestSplit);
 		if (bestSplit != leftRange) {
-			leftMax = representatives->at(bestSplit - 1);
+			*leftMax = representatives->at(bestSplit - 1);
 		}
 	}
 }
@@ -97,7 +96,7 @@ void addIrregularTrieLeaf(std::vector<uint64_t> values, std::vector<TrieNode*>* 
 
 
 void YTrie::split(std::vector <uint64_t> values) {
-	for (int64_t i = depth_ - 1; i < values.size(); i = i + depth_) {
+	for (uint64_t i = depth_ - 1; i < values.size(); i = i + depth_) {
 		// Store the representative and construct the BST for it.
 		addRegularTrieLeaf(values, i, &representatives_, depth_);
 	}
@@ -113,7 +112,7 @@ void YTrie::constructTrie(std::vector<TrieNode*>* representatives, int64_t expon
 		uint64_t splitIndex = rightRange + 1;
 		TrieNode* leftMax = nullptr;
 		TrieNode* rightMin = nullptr;
-		splitPointSearch(representatives, &splitIndex, leftMax, rightMin, exponent, leftRange, rightRange);
+		splitPointSearch(representatives, &splitIndex, &leftMax, &rightMin, exponent, leftRange, rightRange);
 		if (leftMax == nullptr && rightMin == nullptr) { // No split was found, all representant belong to the left side of this inner node
 			leftMax = (*representatives)[rightRange];
 		}
@@ -152,12 +151,12 @@ uint64_t YTrie::getPredecessor(uint64_t limit) {
 	if (limit < minimalValue_) {
 		return ULLONG_MAX;
 	}
-	int64_t lowRange = 0;
-	int64_t highRange = depth_ + 1;
+	uint64_t lowRange = 0;
+	uint64_t highRange = depth_ + 1;
 	std::string fullBitString = std::bitset<64>(limit).to_string().substr(64-(depth_+1)); // Input bit-string with same length as representants
 	TrieNode* bestMatchingNode = lookup_[""];
 	while (lowRange <= highRange) {
-		int64_t middle = round((lowRange + highRange) / 2);
+		uint64_t middle = (uint64_t) round((lowRange + highRange) / 2);
 		std::string partBitString = fullBitString.substr(0, middle);
 		if (lookup_.count(partBitString) != 0) { // Matched part bit string. Remember node and search lower in trie 
 			bestMatchingNode = lookup_[partBitString];

@@ -61,7 +61,7 @@ int runProgram(int argc, const char** argv) {
 	std::string inputFile = std::string(argv[2]);
 	std::string outputFile = std::string(argv[3]);
 	std::chrono::milliseconds duration;
-	uint memory;
+	size_t memory;
 	std::vector<uint64_t> values;
 	std::vector<uint64_t> *answers = new std::vector<uint64_t>();
 	if (selection == "pd") {
