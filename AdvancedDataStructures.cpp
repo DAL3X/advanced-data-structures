@@ -52,10 +52,6 @@ void writeAnswerFile(std::string path, std::vector<uint64_t>* answers) {
 	file.close();
 }
 
-int main(int argc, const char** argv) {
-	return runProgram(argc, argv);
-}
-
 int runProgram(int argc, const char** argv) {
 	std::string selection = std::string(argv[1]);
 	std::string inputFile = std::string(argv[2]);
@@ -97,4 +93,8 @@ int runProgram(int argc, const char** argv) {
 	writeAnswerFile(outputFile, answers);
 	std::cout << "RESULT " << "algo=" << selection << " name=simon_bothe" << " time=" << duration.count() << " space=" << memory << std::endl;
 	return 0;
+}
+
+int main(int argc, const char** argv) {
+	return runProgram(argc, argv);
 }
