@@ -2,6 +2,7 @@
 #include <cstdint>
 #include <vector>
 #include <unordered_map>
+#include <utility>
 
 /**
 Class for storing RMQ answers and processing the queries in O(1) with O(n log(n)) space usage.
