@@ -12,8 +12,8 @@
 * Eg. with only 32 bit numbers or smaller (even in 64 bit format), we can half the depth of the Trie.
 * The depth is given as the number of bits used to represent the largest number in the input values.
 */
-int64_t calcDepth(std::vector <uint64_t> values) {
-	return (int64_t)std::floor(std::log2(values.back()));
+uint64_t calcDepth(std::vector <uint64_t> values) {
+	return (uint64_t)std::floor(std::log2(values.back()));
 }
 
 /**
